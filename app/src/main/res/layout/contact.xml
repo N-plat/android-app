@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+
+    <TextView
+        android:id="@+id/contact"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact name"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/statusMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/contact"
+        android:layout_below="@id/contact"
+        android:text="Status Message"
+        android:textSize="12sp" />
+
+</RelativeLayout>
