@@ -14,13 +14,4 @@
         android:text="Contact name"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/statusMsg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/contact"
-        android:layout_below="@id/contact"
-        android:text="Status Message"
-        android:textSize="12sp" />
-
 </RelativeLayout>

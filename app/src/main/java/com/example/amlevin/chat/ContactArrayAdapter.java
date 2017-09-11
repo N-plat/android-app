@@ -17,28 +17,26 @@ public class ContactArrayAdapter  extends ArrayAdapter<Contacts.Contact> {
     private static final String TAG = "ContactArrayAdapter";
 
     private final Context context;
-    private final List<Contacts.Contact> contactInfoArrayList;
+    private final List<Contacts.Contact> contact_list;
 
-    public ContactArrayAdapter(Context context, List<Contacts.Contact> contactInfoArrayList) {
-        super(context, R.layout.contact, contactInfoArrayList);
+    public ContactArrayAdapter(Context context, List<Contacts.Contact> contact_list) {
+        super(context, R.layout.contact, contact_list);
         this.context = context;
-        this.contactInfoArrayList = contactInfoArrayList;
+        this.contact_list = contact_list;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View contactInfoView;
+        View contact_view;
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        contactInfoView = inflater.inflate(R.layout.contact, parent, false);
-        TextView contact = (TextView) contactInfoView.findViewById(R.id.contact);
-        contact.setText(contactInfoArrayList.get(position).name);
-        TextView statusMsg = (TextView) contactInfoView.findViewById(R.id.statusMsg);
-        statusMsg.setText(contactInfoArrayList.get(position).statusMsg);
+        contact_view = inflater.inflate(R.layout.contact, parent, false);
+        TextView contact = (TextView) contact_view.findViewById(R.id.contact);
+        contact.setText(contact_list.get(position).name);
 
-        return contactInfoView;
+        return contact_view;
     }
 }
