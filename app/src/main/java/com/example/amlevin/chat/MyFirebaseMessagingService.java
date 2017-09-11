@@ -28,10 +28,6 @@ import static com.google.android.gms.internal.zzs.TAG;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    Context mContext;
-
-    private FirebaseAuth mAuth;
-
     private LocalBroadcastManager broadcaster;
 
     private static final String TAG = "MyFirebaseMessaging";

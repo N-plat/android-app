@@ -37,15 +37,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
-    private String mCustomToken;
+    private String custom_token;
     private String id_token;
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth auth;
 
     Context context;
 
-    ProgressDialog progressDialog;
-
+    ProgressDialog progress_dialog;
 
     public class LoginActivityAsyncTask1 extends AsyncTask<String, Void, String> {
 
@@ -56,16 +55,16 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String string) {
 
-            mCustomToken = string;
+            custom_token = string;
 
-            Log.d(TAG,mCustomToken);
+            Log.d(TAG,custom_token);
 
-            mAuth.signInWithCustomToken(mCustomToken).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+            auth.signInWithCustomToken(custom_token).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
 
-                        FirebaseUser mUser = mAuth.getCurrentUser();
+                        FirebaseUser mUser = auth.getCurrentUser();
 
                         mUser.getToken(true)
                                 .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -272,15 +271,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser user = auth.getCurrentUser();
 
         context = this;
 
         if (user != null) {
 
-            progressDialog.show(context, "","Authenticating");
+            progress_dialog.show(context, "","Authenticating");
 
             user.getToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -288,8 +287,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (task.isSuccessful()) {
 
-                                if (progressDialog != null)
-                                    progressDialog.dismiss();
+                                if (progress_dialog != null)
+                                    progress_dialog.dismiss();
 
                                 id_token = task.getResult().getToken();
 

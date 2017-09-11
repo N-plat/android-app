@@ -12,14 +12,14 @@ import java.util.List;
 /**
  * Created by amlevin on 8/25/2017.
  */
-public class ContactArrayAdapter  extends ArrayAdapter<Contacts.ContactInfo> {
+public class ContactArrayAdapter  extends ArrayAdapter<Contacts.Contact> {
 
     private static final String TAG = "ContactArrayAdapter";
 
     private final Context context;
-    private final List<Contacts.ContactInfo> contactInfoArrayList;
+    private final List<Contacts.Contact> contactInfoArrayList;
 
-    public ContactArrayAdapter(Context context, List<Contacts.ContactInfo> contactInfoArrayList) {
+    public ContactArrayAdapter(Context context, List<Contacts.Contact> contactInfoArrayList) {
         super(context, R.layout.contact, contactInfoArrayList);
         this.context = context;
         this.contactInfoArrayList = contactInfoArrayList;

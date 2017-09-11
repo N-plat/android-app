@@ -53,17 +53,17 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
 
     private static final String TAG="Contacts";
 
-    ListView contactView;
+    ListView contact_listview;
 
-    ContactArrayAdapter mArrayAdapter;
+    ContactArrayAdapter contact_array_adapter;
 
-    public class ContactInfo {
+    public class Contact {
         int id;
         String name;
         String statusMsg;
     }
 
-    List<ContactInfo> contactInfoList = null;
+    List<Contact> contact_list = null;
 
     Context mContext;
 
@@ -103,11 +103,11 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
 
         mContext = this;
 
-        mArrayAdapter = new ContactArrayAdapter(this, contactInfoList);
+        contact_array_adapter = new ContactArrayAdapter(this, contact_list);
 
-        contactView = (ListView) findViewById(R.id.contactListView);
+        contact_listview = (ListView) findViewById(R.id.contactListView);
 
-        contactView.setOnItemClickListener(this);
+        contact_listview.setOnItemClickListener(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -202,8 +202,10 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
 
                     String response = convertInputStreamToString(inputStream);
 
-                    processContactsInfo(response);
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    Gson gson = gsonBuilder.create();
 
+                    contact_list = Arrays.asList(gson.fromJson(response, Contact[].class));
 
                     result = 1;
 
@@ -236,9 +238,9 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            mArrayAdapter = new ContactArrayAdapter(mContext, contactInfoList);
+            contact_array_adapter = new ContactArrayAdapter(mContext, contact_list);
 
-            contactView.setAdapter((ListAdapter) mArrayAdapter);
+            contact_listview.setAdapter((ListAdapter) contact_array_adapter);
 
             progressDialog.dismiss();
         }
@@ -265,12 +267,4 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         return result;
     }
 
-    private void processContactsInfo(String infoString) {
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
-
-        contactInfoList = new ArrayList<ContactInfo>();
-        contactInfoList = Arrays.asList(gson.fromJson(infoString, ContactInfo[].class));
-    }
 }

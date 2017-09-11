@@ -13,14 +13,13 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token: " + refreshedToken);
+        String token = FirebaseInstanceId.getInstance().getToken();
 
-        sendRegistrationToServer(refreshedToken);
+        main_thread_function(token);
 
     }
 
-    private void sendRegistrationToServer(String token) {
+    private void main_thread_function(String token) {
         new DeviceRegistration().execute(token);
     }
 
