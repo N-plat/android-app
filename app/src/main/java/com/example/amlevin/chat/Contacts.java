@@ -60,7 +60,6 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
     public class Contact {
         int id;
         String name;
-        String statusMsg;
     }
 
     List<Contact> contact_list = null;
