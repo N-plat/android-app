@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Created by amlevin on 8/25/2017.
  */
+
 public class ContactArrayAdapter  extends ArrayAdapter<Contacts.Contact> {
 
     private static final String TAG = "ContactArrayAdapter";
@@ -27,15 +28,16 @@ public class ContactArrayAdapter  extends ArrayAdapter<Contacts.Contact> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View contact_view;
 
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         contact_view = inflater.inflate(R.layout.contact, parent, false);
-        TextView contact = (TextView) contact_view.findViewById(R.id.contact);
-        contact.setText(contact_list.get(position).name);
+        TextView contact_textview = (TextView) contact_view.findViewById(R.id.contact);
+        if (contact_list.get(position).name != "")
+            contact_textview.setText(contact_list.get(position).name);
+        else
+            contact_textview.setText(contact_list.get(position).username);
 
         return contact_view;
     }

@@ -58,13 +58,13 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
     ContactArrayAdapter contact_array_adapter;
 
     public class Contact {
-        int id;
+        String username;
         String name;
     }
 
     List<Contact> contact_list = null;
 
-    Context mContext;
+    Context context;
 
     public Contacts() {
     }
@@ -100,7 +100,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-        mContext = this;
+        context = this;
 
         contact_array_adapter = new ContactArrayAdapter(this, contact_list);
 
@@ -130,8 +130,11 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
         Intent mIntent = new Intent(this,Chat.class);
-        TextView contact = (TextView) view.findViewById(R.id.contact);
-        mIntent.putExtra("contact_name", contact.getText().toString());
+
+        //TextView contact = (TextView) view.findViewById(R.id.contact);
+        //mIntent.putExtra("contact_name", contact.getText().toString());
+
+        mIntent.putExtra("contact_name",contact_list.get(position).username);
         mIntent.putExtra("id_token", mIDToken);
         startActivity(mIntent);
 
@@ -149,7 +152,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(mContext, "","Getting Contacts");
+            progressDialog = ProgressDialog.show(context, "","Getting Contacts");
         }
 
         @Override
@@ -237,7 +240,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            contact_array_adapter = new ContactArrayAdapter(mContext, contact_list);
+            contact_array_adapter = new ContactArrayAdapter(context, contact_list);
 
             contact_listview.setAdapter((ListAdapter) contact_array_adapter);
 
