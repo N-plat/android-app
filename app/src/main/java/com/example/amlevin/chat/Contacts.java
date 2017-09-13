@@ -60,6 +60,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
     public class Contact {
         String username;
         String name;
+        Boolean new_message;
     }
 
     List<Contact> contact_list = null;
@@ -88,8 +89,19 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         public void onReceive(Context context, Intent intent) {
             //new Chat.ChatAsyncTask1().execute();
             Log.d(TAG,intent.getExtras().getString("contact"));
+
+            update_contacts();
+
+
+
         }
     };
+
+
+    void update_contacts() {
+
+        new ContactsProcessor().execute();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +149,8 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         mIntent.putExtra("contact_name",contact_list.get(position).username);
         mIntent.putExtra("id_token", mIDToken);
         startActivity(mIntent);
+
+        contact_list.get(position).new_message = false;
 
     }
 
