@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,7 +67,14 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            new ChatAsyncTask1().execute();
+
+            Log.d(TAG,contact);
+            Log.d(TAG,intent.getStringExtra("contact"));
+
+            if (intent.getStringExtra("contact").equals(contact))
+                new ChatAsyncTask1().execute();
+            else
+                Toast.makeText(context, intent.getStringExtra("contact")+": "+intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
             //Log.d(TAG,intent.getExtras().getString("data"));
         }
     };

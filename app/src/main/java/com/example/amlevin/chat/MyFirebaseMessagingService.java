@@ -34,12 +34,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public MyFirebaseMessagingService() {
 
-        broadcaster = LocalBroadcastManager.getInstance(this);
-
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+
+        broadcaster = LocalBroadcastManager.getInstance(this);
 
         //Log.d(TAG,remoteMessage.getNotification().getBody().toString());
 
