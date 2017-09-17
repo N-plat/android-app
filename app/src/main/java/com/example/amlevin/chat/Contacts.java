@@ -77,6 +77,8 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver),
                 new IntentFilter("new_message")
         );
+
+        update_contacts();
     }
 
     @Override
@@ -133,8 +135,6 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
                 Snackbar.make(view, "Should set up to add new contacts", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
-
-        new ContactsProcessor().execute();
 
     }
 
