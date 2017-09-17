@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class Message {
     private String username;
+    private String name;
     private String message;
     private boolean forward;
     private Date date;
@@ -12,11 +13,16 @@ public class Message {
     public Message() {
     }
 
-    public Message(String username, String message, boolean forward, Date date) {
+    public Message(String username, String name, String message, boolean forward, Date date) {
         this.username = username;
+        this.name = name;
         this.message = message;
         this.forward = forward;
         this.date = date;
+    }
+
+    public String name() {
+        return name;
     }
 
     public String username() {

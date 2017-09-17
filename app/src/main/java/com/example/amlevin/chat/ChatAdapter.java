@@ -17,22 +17,22 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_HOLDER_TYPE_2=2;
 
     public static class ViewHolder_Type1 extends RecyclerView.ViewHolder {
-        public TextView forward_message_TextView, forward_message_time_TextView;
+        public TextView forward_message_TextView;//, forward_message_time_TextView;
         public ViewHolder_Type1(View v) {
             super(v);
             this.forward_message_TextView = (TextView) v.findViewById(R.id.forward_message_TextView);
-            this.forward_message_time_TextView = (TextView) v.findViewById(R.id.forward_message_time_TextView);
+            //this.forward_message_time_TextView = (TextView) v.findViewById(R.id.forward_message_time_TextView);
         }
 
 
     }
 
     public static class ViewHolder_Type2 extends RecyclerView.ViewHolder {
-        public TextView backward_message_TextView, backward_message_time_TextView;
+        public TextView backward_message_TextView;//, backward_message_time_TextView;
         public ViewHolder_Type2(View v) {
             super(v);
             this.backward_message_TextView = (TextView) v.findViewById(R.id.backward_message_TextView);
-            this.backward_message_time_TextView = (TextView) v.findViewById(R.id.backward_message_time_TextView);
+            //this.backward_message_time_TextView = (TextView) v.findViewById(R.id.backward_message_time_TextView);
         }
 
 
@@ -77,18 +77,21 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             case VIEW_HOLDER_TYPE_1:
                 ViewHolder_Type1 viewholder1 = (ViewHolder_Type1) holder;
-                TextView mytimeView = (TextView) viewholder1.forward_message_time_TextView;
-                mytimeView.setText(messages.get(position).time());
+                //TextView mytimeView = (TextView) viewholder1.forward_message_time_TextView;
+                //mytimeView.setText(messages.get(position).time());
                 TextView mymsgView = (TextView) viewholder1.forward_message_TextView;
-                mymsgView.setText(messages.get(position).message());
+                if (messages.get(position).name().equals(""))
+                    mymsgView.setText(messages.get(position).username().substring(0,3)+"...: "+messages.get(position).message());
+                else
+                    mymsgView.setText(messages.get(position).name().substring(0,3)+"...: "+messages.get(position).message());
                 break;
 
             case VIEW_HOLDER_TYPE_2:
                 ViewHolder_Type2 viewholder2 = (ViewHolder_Type2) holder;
-                TextView timeView = (TextView) viewholder2.backward_message_time_TextView;
-                timeView.setText(messages.get(position).time());
+                //TextView timeView = (TextView) viewholder2.backward_message_time_TextView;
+                //timeView.setText(messages.get(position).time());
                 TextView msgView = (TextView) viewholder2.backward_message_TextView;
-                msgView.setText(messages.get(position).message());
+                msgView.setText("You: "+messages.get(position).message());
                 break;
 
             default:

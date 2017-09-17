@@ -48,7 +48,8 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
     int in_index = 0;
 
     private String id_token;
-    private String contact;
+    private String contact_username;
+    private String contact_name;
 
     @Override
     protected void onStart() {
@@ -68,10 +69,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Log.d(TAG,contact);
-            Log.d(TAG,intent.getStringExtra("contact"));
-
-            if (intent.getStringExtra("contact").equals(contact))
+            if (intent.getStringExtra("contact").equals(contact_username))
                 new ChatAsyncTask1().execute();
             else
                 Toast.makeText(context, intent.getStringExtra("contact")+": "+intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
@@ -119,7 +117,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
                 JSONObject json = new JSONObject();
 
-                json.put("contact",contact);
+                json.put("contact",contact_username);
                 json.put("id_token",id_token);
 
                 writer.write(json.toString());
@@ -214,7 +212,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
             for (int i = 0 ; i < messages_json.length(); i=i+1){
                 Message message = null;
                 try {
-                    message = new Message("John", messages_json.getJSONObject(i).getString("messages"), messages_json.getJSONObject(i).getBoolean("forward"),  new Date());
+                    message = new Message(contact_username, contact_name, messages_json.getJSONObject(i).getString("messages"), messages_json.getJSONObject(i).getBoolean("forward"),  new Date());
                 } catch (JSONException e) {
 
                     if (e.getMessage() != null) {
@@ -279,7 +277,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
                 JSONObject json = new JSONObject();
 
                 json.put("id_token",id_token);
-                json.put("contact",contact);
+                json.put("contact",contact_username);
                 json.put("message",message);
 
                 writer.write(json.toString());
@@ -389,10 +387,14 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         mAdapter = new ChatAdapter(this, messages);
 
         Intent in = getIntent();
-        contact = in.getStringExtra("contact_name");
+        contact_username = in.getStringExtra("contact_username");
+        contact_name = in.getStringExtra("contact_name");
         id_token = in.getStringExtra("id_token");
 
-        getSupportActionBar().setTitle("You" + ": " + contact);
+        if (contact_name.equals(""))
+            getSupportActionBar().setTitle("Chat with " + contact_username);
+        else
+            getSupportActionBar().setTitle("Chat with " + contact_name);
 
         messageList = (RecyclerView) findViewById(R.id.messageList);
         messageList.setHasFixedSize(true);

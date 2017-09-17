@@ -45,6 +45,7 @@ import javax.net.ssl.HttpsURLConnection;
 /**
  * Created by amlevin on 8/25/2017.
  */
+
 public class Contacts extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private String mIDToken;
@@ -146,7 +147,8 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         //TextView contact = (TextView) view.findViewById(R.id.contact);
         //mIntent.putExtra("contact_name", contact.getText().toString());
 
-        mIntent.putExtra("contact_name",contact_list.get(position).username);
+        mIntent.putExtra("contact_username",contact_list.get(position).username);
+        mIntent.putExtra("contact_name",contact_list.get(position).name);
         mIntent.putExtra("id_token", mIDToken);
         startActivity(mIntent);
 
