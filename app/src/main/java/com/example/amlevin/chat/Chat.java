@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -377,8 +379,12 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
         setContentView(R.layout.activity_chat);
 
-        sendButton = (ImageButton) findViewById(R.id.sendButton);
-        sendButton.setOnClickListener(this);
+        FloatingActionButton send_message_button = (FloatingActionButton) findViewById(R.id.send_message_button);
+
+        send_message_button.setOnClickListener(this);
+
+//        sendButton = (ImageButton) findViewById(R.id.sendButton);
+//        sendButton.setOnClickListener(this);
 
         messageText = (EditText) findViewById(R.id.messageText);
 
@@ -411,7 +417,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
 
         switch (view.getId()) {
-            case R.id.sendButton:
+            case R.id.send_message_button:
 
                 String message = messageText.getText().toString();
 

@@ -127,14 +127,14 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
 
         //setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Should set up to add new contacts", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        });
+        //fab.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
+        //        Snackbar.make(view, "Should set up to add new contacts", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        //    }
+        //});
 
     }
 
