@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
     ProgressDialog progress_dialog;
 
+
     public class LoginActivityAsyncTask1 extends AsyncTask<String, Void, String> {
 
         private static final String TAG = "LoginActivityAsyncTask1";
@@ -181,6 +182,10 @@ public class LoginActivity extends AppCompatActivity {
 
             mIntent.putExtra("IDToken", id_token);
 
+            if (progress_dialog != null) {
+                progress_dialog.dismiss();
+            }
+
             startActivity(mIntent);
 
         }
@@ -266,6 +271,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        this.finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -279,7 +290,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if (user != null) {
 
-            progress_dialog.show(context, "","Authenticating");
+            //doing just progress_dialog.show(...) leads to null pointer exceptions when progress_dialog.dismiss is called later
+            progress_dialog = ProgressDialog.show(context, "","Authenticating");
 
             user.getToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -287,8 +299,9 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (task.isSuccessful()) {
 
-                                if (progress_dialog != null)
+                                if (progress_dialog != null) {
                                     progress_dialog.dismiss();
+                                }
 
                                 id_token = task.getResult().getToken();
 
