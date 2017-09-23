@@ -282,6 +282,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getSupportActionBar().setTitle("Login");
+
         auth = FirebaseAuth.getInstance();
 
         FirebaseUser user = auth.getCurrentUser();
