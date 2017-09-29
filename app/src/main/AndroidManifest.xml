@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.amlevin.chat">
+    package="ch.ecommunicate.amlevin.chat">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
@@ -13,11 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.amlevin.chat.Chat">
+        <activity android:name="ch.ecommunicate.amlevin.chat.Chat">
         </activity>
-        <activity android:name="com.example.amlevin.chat.Contacts">
+        <activity android:name="ch.ecommunicate.amlevin.chat.Contacts">
         </activity>
-        <activity android:name="com.example.amlevin.chat.LoginActivity">
+        <activity android:name="ch.ecommunicate.amlevin.chat.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,15 +26,15 @@
         </activity>
 
         <service
-            android:name="com.example.amlevin.chat.MyFirebaseMessagingService"
+            android:name="ch.ecommunicate.amlevin.chat.MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="ch.ecommunicate.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name="com.example.amlevin.chat.MyFirebaseInstanceIdService"
+            android:name="ch.ecommunicate.amlevin.chat.MyFirebaseInstanceIdService"
             android:enabled="true"
             android:exported="true">
 
