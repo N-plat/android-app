@@ -36,7 +36,7 @@ public class DeviceRegistration extends AsyncTask<String, Void, String> {
 
         try {
 
-            URL url = new URL("https://test.ecommunicate.ch:443/deviceregistration/");
+            URL url = new URL("https://android.ecommunicate.ch:443/deviceregistration/");
 
             urlConnection = (HttpsURLConnection) url.openConnection();
 
