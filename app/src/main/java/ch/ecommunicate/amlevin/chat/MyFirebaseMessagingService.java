@@ -41,25 +41,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         broadcaster = LocalBroadcastManager.getInstance(this);
 
-        //Log.d(TAG,remoteMessage.getNotification().getBody().toString());
+        Intent intent = new Intent("new_message");
 
-        try {
+        intent.putExtra("contact",remoteMessage.getData().get("contact"));
+        intent.putExtra("message",remoteMessage.getData().get("message"));
 
-            JSONObject new_message_json = new JSONObject(remoteMessage.getNotification().getBody().toString());
+        broadcaster.sendBroadcast(intent);
 
-            Intent intent = new Intent("new_message");
-
-            intent.putExtra("contact",new_message_json.getString("contact"));
-            intent.putExtra("message",new_message_json.getString("message"));
-
-            broadcaster.sendBroadcast(intent);
-
-
-        } catch (JSONException e) {
-
-            //Log.d(TAG,"JSON exception 1");
-
-        }
 
 
         Log.i(TAG, "From: " + remoteMessage.getFrom());
