@@ -71,6 +71,9 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            Log.d(TAG,contact_username);
+            Log.d(TAG,intent.getStringExtra("contact"));
+
             if (intent.getStringExtra("contact").equals(contact_username))
                 new ChatAsyncTask1().execute();
             else
