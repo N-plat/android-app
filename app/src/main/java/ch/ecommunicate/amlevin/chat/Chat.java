@@ -75,7 +75,6 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
                 new ChatAsyncTask1().execute();
             else
                 Toast.makeText(context, intent.getStringExtra("contact")+": "+intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
-            //Log.d(TAG,intent.getExtras().getString("data"));
         }
     };
 
@@ -187,16 +186,9 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
         private void process_response(String response) {
 
-            Log.d(TAG,response);
-
             JSONArray messages_json = null;
             try {
-
-                Log.d(TAG,"andrew debug 1");
-                Log.d(TAG,response);
-                Log.d(TAG,"andrew debug 2");
                 messages_json = new JSONArray(response);
-                Log.d(TAG,"andrew debug 3");
             } catch (JSONException e) {
 
                 if (e.getMessage() != null) {
