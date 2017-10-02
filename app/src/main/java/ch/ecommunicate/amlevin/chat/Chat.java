@@ -71,9 +71,6 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Log.d(TAG,contact_username);
-            Log.d(TAG,intent.getStringExtra("contact"));
-
             if (intent.getStringExtra("contact").equals(contact_username))
                 new ChatAsyncTask1().execute();
             else
@@ -194,7 +191,12 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
             JSONArray messages_json = null;
             try {
+
+                Log.d(TAG,"andrew debug 1");
+                Log.d(TAG,response);
+                Log.d(TAG,"andrew debug 2");
                 messages_json = new JSONArray(response);
+                Log.d(TAG,"andrew debug 3");
             } catch (JSONException e) {
 
                 if (e.getMessage() != null) {
@@ -298,11 +300,6 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
                 int statusCode = urlConnection.getResponseCode();
 
                 if (statusCode == 200) {
-                    inputStream = new BufferedInputStream(urlConnection.getInputStream());
-
-                    String response = convertInputStreamToString(inputStream);
-
-                    process_response(response);
 
                     result = 1;
 
@@ -346,32 +343,6 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
                 inputStream.close();
             }
             return result;
-        }
-
-        private void process_response(String response) {
-
-            Log.d(TAG,response);
-
-            JSONArray messages_json = null;
-            try {
-                messages_json = new JSONArray(response);
-            } catch (JSONException e) {
-
-                if (e.getMessage() != null) {
-                    Log.d(TAG, e.getMessage());
-                }
-
-                if (e.getLocalizedMessage() != null) {
-                    Log.d(TAG, e.getLocalizedMessage());
-                }
-
-                if (e.getCause() != null) {
-                    Log.d(TAG, e.getCause().toString());
-                }
-
-                e.printStackTrace();
-            }
-
         }
 
     }
