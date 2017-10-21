@@ -1,4 +1,4 @@
-package ch.ecommunicate.amlevin.chat;
+package ch.ecommunicate.chat;
 
 import android.os.AsyncTask;
 import android.util.Log;

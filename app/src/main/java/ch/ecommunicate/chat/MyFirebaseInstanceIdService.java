@@ -1,11 +1,7 @@
-package ch.ecommunicate.amlevin.chat;
-
-import android.util.Log;
+package ch.ecommunicate.chat;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-
-import static com.google.android.gms.internal.zzs.TAG;
 
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
     public MyFirebaseInstanceIdService() {

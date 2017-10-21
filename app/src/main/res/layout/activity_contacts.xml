@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="ch.ecommunicate.amlevin.chat.LoginActivity">
+    tools:context="ch.ecommunicate.chat.LoginActivity">
 
     <include layout="@layout/content_contacts" />
 

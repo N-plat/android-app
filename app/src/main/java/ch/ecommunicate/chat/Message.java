@@ -1,4 +1,4 @@
-package ch.ecommunicate.amlevin.chat;
+package ch.ecommunicate.chat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

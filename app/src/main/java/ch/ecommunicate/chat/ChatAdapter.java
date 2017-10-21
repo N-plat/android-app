@@ -1,4 +1,4 @@
-package ch.ecommunicate.amlevin.chat;
+package ch.ecommunicate.chat;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
