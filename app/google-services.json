@@ -36,6 +36,73 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771719673142:android:ff5a4972dd4345a3",
+        "android_client_info": {
+          "package_name": "ch.ecommunicate.email"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771719673142-m79g38dtd2rfoph6l4epoon7ir6qgsv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKx1cmVkcLJJ8M9KzuNOLAgvo-sBUaTd8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771719673142:android:13c95812d242716c",
+        "android_client_info": {
+          "package_name": "ch.ecommunicate.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771719673142-m79g38dtd2rfoph6l4epoon7ir6qgsv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKx1cmVkcLJJ8M9KzuNOLAgvo-sBUaTd8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771719673142-m79g38dtd2rfoph6l4epoon7ir6qgsv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"
