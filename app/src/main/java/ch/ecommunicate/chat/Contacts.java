@@ -149,7 +149,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(context, "","Getting Contacts");
+            //progressDialog = ProgressDialog.show(context, "","Getting Contacts");
         }
 
         @Override
@@ -241,7 +241,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
 
             contact_listview.setAdapter((ListAdapter) contact_array_adapter);
 
-            progressDialog.dismiss();
+            //progressDialog.dismiss();
         }
 
         @Override
