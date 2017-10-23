@@ -80,10 +80,18 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 //TextView mytimeView = (TextView) viewholder1.forward_message_time_TextView;
                 //mytimeView.setText(messages.get(position).time());
                 TextView mymsgView = (TextView) viewholder1.forward_message_TextView;
-                if (messages.get(position).name().equals(""))
-                    mymsgView.setText(messages.get(position).username().substring(0,3)+"...: "+messages.get(position).message());
-                else
-                    mymsgView.setText(messages.get(position).name().substring(0,3)+"...: "+messages.get(position).message());
+                if (messages.get(position).name().equals("")) {
+                    if (messages.get(position).username().length() > 6)
+                        mymsgView.setText(messages.get(position).username().substring(0, 3) + "...: " + messages.get(position).message());
+                    else
+                        mymsgView.setText(messages.get(position).username() + ": " + messages.get(position).message());
+                }
+                else {
+                    if (messages.get(position).name().length() > 6)
+                        mymsgView.setText(messages.get(position).name().substring(0, 3) + "...: " + messages.get(position).message());
+                    else
+                        mymsgView.setText(messages.get(position).name() + ": " + messages.get(position).message());
+                }
                 break;
 
             case VIEW_HOLDER_TYPE_2:

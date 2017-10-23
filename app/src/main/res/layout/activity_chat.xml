@@ -49,7 +49,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_above="@+id/linearLayout"
-        android:padding="5pt"
+        android:padding="0pt"
         android:background="@null"
         android:id="@+id/linearLayout2">
 
