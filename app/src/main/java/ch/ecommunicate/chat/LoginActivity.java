@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 String password = username_and_password[1];
 
-                URL url = new URL("https://android.ecommunicate.ch:443/login/");
+                URL url = new URL("https://chat.android.ecommunicate.ch:443/login/");
 
                 urlConnection = (HttpsURLConnection) url.openConnection();
 
@@ -199,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("https://android.ecommunicate.ch:443/registerdevice/");
+                URL url = new URL("https://chat.android.ecommunicate.ch:443/registerdevice/");
 
                 urlConnection = (HttpsURLConnection) url.openConnection();
 

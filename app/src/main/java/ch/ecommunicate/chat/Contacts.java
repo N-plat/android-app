@@ -160,7 +160,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
             Integer result = 0;
 
             try {
-                URL url = new URL("https://android.ecommunicate.ch:443/contacts/");
+                URL url = new URL("https://chat.android.ecommunicate.ch:443/contacts/");
                 urlConnection = (HttpsURLConnection) url.openConnection();
 
                 urlConnection.setRequestProperty("Content-Type","application/json");
