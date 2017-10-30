@@ -42,7 +42,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Contacts extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    private String mIDToken;
+    private String id_token;
 
     private FirebaseAuth mAuth;
 
@@ -104,7 +104,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
     protected void onCreate(Bundle savedInstanceState) {
 
         Intent in = getIntent();
-        mIDToken = in.getStringExtra("IDToken");
+        id_token = in.getStringExtra("id_token");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
@@ -130,7 +130,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
 
         mIntent.putExtra("contact_username",contact_list.get(position).username);
         mIntent.putExtra("contact_name",contact_list.get(position).name);
-        mIntent.putExtra("id_token", mIDToken);
+        mIntent.putExtra("id_token", id_token);
         startActivity(mIntent);
 
         contact_list.get(position).new_message = false;
@@ -182,7 +182,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
 
                 String device_token = FirebaseInstanceId.getInstance().getToken();
 
-                token_json.put("auth_token",mIDToken);
+                token_json.put("id_token",id_token);
 
                 writer.write(token_json.toString());
 

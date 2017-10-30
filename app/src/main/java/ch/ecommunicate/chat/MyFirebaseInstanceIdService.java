@@ -9,14 +9,13 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {
-        String token = FirebaseInstanceId.getInstance().getToken();
 
-        main_thread_function(token);
+        main_thread_function();
 
     }
 
-    private void main_thread_function(String token) {
-        new DeviceRegistration().execute(token);
+    private void main_thread_function() {
+        new RegisterDevice().execute();
     }
 
 }

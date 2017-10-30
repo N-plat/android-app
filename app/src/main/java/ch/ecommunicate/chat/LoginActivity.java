@@ -47,9 +47,9 @@ public class LoginActivity extends AppCompatActivity {
     ProgressDialog progress_dialog;
 
 
-    public class LoginActivityAsyncTask1 extends AsyncTask<String, Void, String> {
+    public class LoginAndGetIDToken extends AsyncTask<String, Void, String> {
 
-        private static final String TAG = "LoginActivityAsyncTask1";
+        private static final String TAG = "LoginActivityAsyncTask";
 
 
 
@@ -75,7 +75,17 @@ public class LoginActivity extends AppCompatActivity {
 
                                             id_token = task.getResult().getToken();
 
-                                            new LoginActivityAsyncTask2().execute();
+                                            new RegisterDevice().execute();
+
+                                            Intent mIntent = new Intent(LoginActivity.this,Contacts.class);
+
+                                            mIntent.putExtra("id_token", id_token);
+
+                                            if (progress_dialog != null) {
+                                                progress_dialog.dismiss();
+                                            }
+
+                                            startActivity(mIntent);
 
                                         } else {
                                         }
@@ -171,106 +181,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public class LoginActivityAsyncTask2 extends AsyncTask<String, Void, String> {
-
-        private static final String TAG = "LoginActivityAsyncTask2";
-
-        @Override
-        protected void onPostExecute(String string) {
-
-            Intent mIntent = new Intent(LoginActivity.this,Contacts.class);
-
-            mIntent.putExtra("IDToken", id_token);
-
-            if (progress_dialog != null) {
-                progress_dialog.dismiss();
-            }
-
-            startActivity(mIntent);
-
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            InputStream inputStream = null;
-            HttpsURLConnection urlConnection = null;
-
-            String response = "";
-
-            try {
-
-                URL url = new URL("https://chat.android.ecommunicate.ch:443/registerdevice/");
-
-                urlConnection = (HttpsURLConnection) url.openConnection();
-
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-
-                urlConnection.setRequestProperty("Accept", "application/json");
-
-                urlConnection.setDoInput(true);
-
-                urlConnection.setDoOutput(true);
-
-                OutputStream os = urlConnection.getOutputStream();
-
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-
-                JSONObject token_json = new JSONObject();
-
-                String device_token = FirebaseInstanceId.getInstance().getToken();
-
-                token_json.put("auth_token",id_token);
-                token_json.put("device_token",device_token);
-
-                writer.write(token_json.toString());
-
-                writer.flush();
-
-                writer.close();
-
-                os.close();
-
-                urlConnection.setRequestMethod("POST");
-
-                urlConnection.connect();
-
-                int statusCode = urlConnection.getResponseCode();
-
-                if (statusCode == 200) {
-
-                    String line;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    while ((line=br.readLine()) != null) {
-                        response+=line;
-                    }
-
-
-                } else {
-
-                }
-            }
-            catch (Exception e) {
-
-                if (e.getMessage() != null) {
-                    Log.d(TAG, e.getMessage());
-                }
-
-                if (e.getLocalizedMessage() != null) {
-                    Log.d(TAG, e.getLocalizedMessage());
-                }
-
-                if (e.getCause() != null) {
-                    Log.d(TAG, e.getCause().toString());
-                }
-
-                e.printStackTrace();
-            }
-
-            return response;
-        }
-    }
-
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -309,7 +219,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 Intent in = new Intent(LoginActivity.this, Contacts.class);
 
-                                in.putExtra("IDToken", id_token);
+                                in.putExtra("id_token", id_token);
 
                                 startActivity(in);
 
@@ -338,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     String passwordString = editPassword.getText().toString();
 
-                    new LoginActivityAsyncTask1().execute(usernameString, passwordString);
+                    new LoginAndGetIDToken().execute(usernameString, passwordString);
                 }
 
             });
