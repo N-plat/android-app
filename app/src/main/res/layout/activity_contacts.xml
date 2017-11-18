@@ -7,6 +7,7 @@
     android:fitsSystemWindows="true"
     tools:context="ch.ecommunicate.chat.LoginActivity">
 
-    <include layout="@layout/content_contacts" />
+    <include layout="@layout/content_contacts"
+        android:id="@+id/include" />
 
 </android.support.design.widget.CoordinatorLayout>

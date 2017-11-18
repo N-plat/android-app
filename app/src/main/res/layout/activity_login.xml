@@ -7,11 +7,11 @@
     tools:context="ch.ecommunicate.chat.LoginActivity">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="21dp"
-        android:text="Register at ecommunicate.ch"
+        android:text=""
         android:textSize="18sp"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"

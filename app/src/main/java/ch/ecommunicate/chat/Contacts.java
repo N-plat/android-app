@@ -9,11 +9,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -116,6 +119,11 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         contact_listview = (ListView) findViewById(R.id.contactListView);
 
         contact_listview.setOnItemClickListener(this);
+
+        TextView tv = (TextView) findViewById(R.id.add_contacts_textview);
+        tv.setText(Html.fromHtml("Add contacts at <a href=\"https://ecommunicate.ch/chat/makecontactrequests/\">ecommunicate.ch</a>"));
+        tv.setLinksClickable(true);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 
