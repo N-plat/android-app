@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -54,14 +56,31 @@ public class LoginActivity extends AppCompatActivity {
 
         private static final String TAG = "LoginActivityAsyncTask";
 
+        String custom_token = "";
 
+
+        @Override
+        protected void onPreExecute(){
+
+            //doing just progress_dialog.show(...) leads to null pointer exceptions when progress_dialog.dismiss is called later
+            progress_dialog = ProgressDialog.show(context, "","Authenticating");
+
+        }
 
         @Override
         protected void onPostExecute(String string) {
 
-            custom_token = string;
+            if (string == "false") {
 
-            Log.d(TAG,custom_token);
+                if (progress_dialog != null) {
+                    progress_dialog.dismiss();
+                }
+
+                TextView tv = (TextView) findViewById(R.id.loginerrors);
+                tv.setText("Login unsuccessful");
+
+                return;
+            }
 
             auth.signInWithCustomToken(custom_token).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -91,6 +110,15 @@ public class LoginActivity extends AppCompatActivity {
                                             startActivity(mIntent);
 
                                         } else {
+
+                                            if (progress_dialog != null) {
+                                                progress_dialog.dismiss();
+                                            }
+
+                                            TextView tv = (TextView) findViewById(R.id.loginerrors);
+                                            tv.setText("Login unsuccessful");
+
+                                            return;
                                         }
                                     }
                                 });
@@ -106,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... username_and_password) {
             InputStream inputStream = null;
             HttpsURLConnection urlConnection = null;
-
+            JSONObject json_object = null;
             String response = "";
 
             try {
@@ -159,7 +187,33 @@ public class LoginActivity extends AppCompatActivity {
                         response+=line;
                     }
 
+                    try {
+                        Log.d(TAG,"andrew debug 1");
+                        Log.d(TAG,response);
+                        Log.d(TAG,"andrew debug 2");
+
+                        json_object = new JSONObject(response);
+
+                    } catch (JSONException e) {
+
+                        if (e.getMessage() != null) {
+                            Log.d(TAG, e.getMessage());
+                        }
+
+                        if (e.getLocalizedMessage() != null) {
+                            Log.d(TAG, e.getLocalizedMessage());
+                        }
+
+                        if (e.getCause() != null) {
+                            Log.d(TAG, e.getCause().toString());
+                        }
+
+                        e.printStackTrace();
+                    }
+
                 } else {
+
+
 
                 }
             }
@@ -180,7 +234,40 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            return response;
+            if (json_object != null){
+
+                try {
+                    if(json_object.getBoolean("success")){
+
+                        custom_token = json_object.getString("custom_token");
+
+                        Log.d(TAG,custom_token);
+
+                        return "true";
+                    }
+
+                } catch (JSONException e) {
+
+                    if (e.getMessage() != null) {
+                        Log.d(TAG, e.getMessage());
+                    }
+
+                    if (e.getLocalizedMessage() != null) {
+                        Log.d(TAG, e.getLocalizedMessage());
+                    }
+
+                    if (e.getCause() != null) {
+                        Log.d(TAG, e.getCause().toString());
+                    }
+
+                    e.printStackTrace();
+
+                    return "false";
+                }
+
+            }
+
+            return "false";
         }
     }
 
