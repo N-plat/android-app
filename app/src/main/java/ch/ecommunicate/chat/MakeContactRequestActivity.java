@@ -239,7 +239,7 @@ public class MakeContactRequestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle("Make Contact Request");
+        getSupportActionBar().setTitle("Make Contact Requests");
 
         context = this;
 
