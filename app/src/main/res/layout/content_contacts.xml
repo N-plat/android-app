@@ -12,26 +12,32 @@
     tools:context="ch.ecommunicate.chat.LoginActivity"
     tools:showIn="@layout/activity_contacts">
 
-    <TextView
-        android:id="@+id/add_contacts_textview"
+    <Button
+        android:id="@+id/makecontactrequestsbutton"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/respondtocontactrequestsbutton"
+        android:layout_alignParentBottom="false"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="false"
+        android:text="Make Contact Requests" />
+
+    <Button
+        android:id="@+id/respondtocontactrequestsbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="5dp"
-        android:text="Add contacts at ecommunicate.ch"
-        android:textAlignment="center"
-        android:textSize="24dp" />
+        android:layout_centerHorizontal="true"
+        android:text="Respond To Contact requests" />
 
     <ListView
-        android:layout_above="@+id/add_contacts_textview"
         android:id="@+id/contactListView"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true">
+        android:layout_above="@+id/makecontactrequestsbutton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
     </ListView>
 

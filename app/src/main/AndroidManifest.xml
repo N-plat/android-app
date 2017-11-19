@@ -17,6 +17,10 @@
         </activity>
         <activity android:name="ch.ecommunicate.chat.Contacts">
         </activity>
+        <activity android:name="ch.ecommunicate.chat.MakeContactRequestActivity">
+        </activity>
+        <activity android:name="ch.ecommunicate.chat.RespondToContactRequestsActivity">
+        </activity>
         <activity android:name="ch.ecommunicate.chat.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

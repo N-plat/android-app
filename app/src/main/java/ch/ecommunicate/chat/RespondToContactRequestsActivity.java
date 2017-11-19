@@ -13,9 +13,8 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,64 +44,40 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by amlevin on 8/25/2017.
  */
 
-public class Contacts extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class RespondToContactRequestsActivity extends AppCompatActivity {
 
     private String id_token;
 
     private FirebaseAuth mAuth;
 
-    private static final String TAG="Contacts";
+    private static final String TAG="Activity1";
 
-    ListView contact_listview;
+    ListView respondtocontactrequests_listview;
 
-    ContactArrayAdapter contact_array_adapter;
+    RespondToContactRequestArrayAdapter respondtocontactrequests_array_adapter;
 
-    public class Contact {
+    public class RespondToContactRequest {
         String username;
         String name;
-        Boolean new_message;
+        String message;
     }
 
-    List<Contact> contact_list = null;
+    List<RespondToContactRequest> respondtocontactrequests_list = null;
 
     Context context;
 
-    public Contacts() {
+    public RespondToContactRequestsActivity() {
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver),
-                new IntentFilter("new_message")
-        );
 
-        update_contacts();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-    }
-
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //new Chat.ChatAsyncTask1().execute();
-            Log.d(TAG,intent.getExtras().getString("contact"));
-
-            update_contacts();
-
-
-
-        }
-    };
-
-
-    void update_contacts() {
-
-        new ContactsProcessor().execute();
     }
 
     @Override
@@ -112,71 +87,26 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         id_token = in.getStringExtra("id_token");
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contacts);
+
+        getSupportActionBar().setTitle("Contact Requests");
+
+        setContentView(R.layout.activity_respondtocontactrequests);
 
         context = this;
 
-        contact_array_adapter = new ContactArrayAdapter(this, contact_list);
+        respondtocontactrequests_array_adapter = new RespondToContactRequestArrayAdapter(this, respondtocontactrequests_list);
 
-        contact_listview = (ListView) findViewById(R.id.contactListView);
+        respondtocontactrequests_listview = (ListView) findViewById(R.id.contact_requests_listview);
 
-        contact_listview.setOnItemClickListener(this);
-
-        Button respondtocontactrequestsbutton = (Button) findViewById(R.id.respondtocontactrequestsbutton);
-
-        respondtocontactrequestsbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent mIntent = new Intent(Contacts.this,RespondToContactRequestsActivity.class);
-
-                mIntent.putExtra("id_token", id_token);
-
-                startActivity(mIntent);
-            }
-
-        });
-
-        Button makecontactrequestsbutton = (Button) findViewById(R.id.makecontactrequestsbutton);
-
-        makecontactrequestsbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent mIntent = new Intent(Contacts.this,MakeContactRequestActivity.class);
-
-                mIntent.putExtra("id_token", id_token);
-
-                startActivity(mIntent);
-            }
-
-        });
+        new AsyncTask1().execute();
 
     }
 
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-        Intent mIntent = new Intent(this,Chat.class);
-
-        //TextView contact = (TextView) view.findViewById(R.id.contact);
-        //mIntent.putExtra("contact_name", contact.getText().toString());
-
-        mIntent.putExtra("contact_username",contact_list.get(position).username);
-        mIntent.putExtra("contact_name",contact_list.get(position).name);
-        mIntent.putExtra("id_token", id_token);
-        startActivity(mIntent);
-
-        contact_list.get(position).new_message = false;
-
-    }
-
-    private class ContactsProcessor extends AsyncTask<String, Void, Integer> {
+    private class AsyncTask1 extends AsyncTask<String, Void, Integer> {
 
         ProgressDialog progressDialog;
 
-        public ContactsProcessor() {
+        public AsyncTask1() {
             super();
         }
 
@@ -195,7 +125,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
             Integer result = 0;
 
             try {
-                URL url = new URL("https://chat.android.ecommunicate.ch:443/contacts/");
+                URL url = new URL("https://chat.android.ecommunicate.ch:443/getcontactrequests/");
                 urlConnection = (HttpsURLConnection) url.openConnection();
 
                 urlConnection.setRequestProperty("Content-Type","application/json");
@@ -214,8 +144,6 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
                         new OutputStreamWriter(os, "UTF-8"));
 
                 JSONObject token_json = new JSONObject();
-
-                String device_token = FirebaseInstanceId.getInstance().getToken();
 
                 token_json.put("id_token",id_token);
 
@@ -239,7 +167,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     Gson gson = gsonBuilder.create();
 
-                    contact_list = Arrays.asList(gson.fromJson(response, Contact[].class));
+                    respondtocontactrequests_list = Arrays.asList(gson.fromJson(response, RespondToContactRequest[].class));
 
                     result = 1;
 
@@ -272,9 +200,9 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            contact_array_adapter = new ContactArrayAdapter(context, contact_list);
+            respondtocontactrequests_array_adapter = new RespondToContactRequestArrayAdapter(context, respondtocontactrequests_list);
 
-            contact_listview.setAdapter((ListAdapter) contact_array_adapter);
+            respondtocontactrequests_listview.setAdapter((ListAdapter) respondtocontactrequests_array_adapter);
 
             //progressDialog.dismiss();
         }
