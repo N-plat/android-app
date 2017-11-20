@@ -101,8 +101,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                             Intent mIntent = new Intent(LoginActivity.this,Contacts.class);
 
-                                            mIntent.putExtra("id_token", id_token);
-
                                             if (progress_dialog != null) {
                                                 progress_dialog.dismiss();
                                             }
@@ -188,9 +186,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     try {
-                        Log.d(TAG,"andrew debug 1");
-                        Log.d(TAG,response);
-                        Log.d(TAG,"andrew debug 2");
 
                         json_object = new JSONObject(response);
 
@@ -240,8 +235,6 @@ public class LoginActivity extends AppCompatActivity {
                     if(json_object.getBoolean("success")){
 
                         custom_token = json_object.getString("custom_token");
-
-                        Log.d(TAG,custom_token);
 
                         return "true";
                     }
@@ -295,7 +288,7 @@ public class LoginActivity extends AppCompatActivity {
             //doing just progress_dialog.show(...) leads to null pointer exceptions when progress_dialog.dismiss is called later
             progress_dialog = ProgressDialog.show(context, "","Authenticating");
 
-            user.getToken(true)
+            user.getToken(false)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
 
@@ -308,8 +301,6 @@ public class LoginActivity extends AppCompatActivity {
                                 id_token = task.getResult().getToken();
 
                                 Intent in = new Intent(LoginActivity.this, Contacts.class);
-
-                                in.putExtra("id_token", id_token);
 
                                 startActivity(in);
 

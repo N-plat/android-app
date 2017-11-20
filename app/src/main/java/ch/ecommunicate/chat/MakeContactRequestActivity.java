@@ -253,15 +253,34 @@ public class MakeContactRequestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                EditText editContactUsername = (EditText) findViewById(R.id.contactUsernameText);
+                FirebaseAuth auth = FirebaseAuth.getInstance();
 
-                EditText editMessage = (EditText) findViewById(R.id.contactRequestMessageText);
+                FirebaseUser user = auth.getCurrentUser();
 
-                String usernameString = editContactUsername.getText().toString();
+                user.getToken(false)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
 
-                String messageString = editMessage.getText().toString();
+                                if (task.isSuccessful()) {
 
-                new AsyncTask1().execute(usernameString, messageString);
+                                    id_token = task.getResult().getToken();
+
+                                    EditText editContactUsername = (EditText) findViewById(R.id.contactUsernameText);
+
+                                    EditText editMessage = (EditText) findViewById(R.id.contactRequestMessageText);
+
+                                    String usernameString = editContactUsername.getText().toString();
+
+                                    String messageString = editMessage.getText().toString();
+
+                                    new AsyncTask1().execute(usernameString, messageString);
+
+                                }
+                            }
+                        });
+
+
+
             }
 
         });

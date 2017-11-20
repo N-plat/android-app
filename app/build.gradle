@@ -7,8 +7,8 @@ android {
         applicationId "ch.ecommunicate.chat"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 18
-        versionName "1_1_7"
+        versionCode 19
+        versionName "1_1_8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

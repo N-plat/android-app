@@ -29,8 +29,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         broadcaster.sendBroadcast(intent);
 
-
-
         Log.i(TAG, "From: " + remoteMessage.getFrom());
 
         if (remoteMessage.getData().size() > 0) {

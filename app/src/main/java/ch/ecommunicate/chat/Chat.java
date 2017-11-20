@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,8 +77,34 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if (intent.getStringExtra("contact").equals(contact_username))
-                new ChatAsyncTask1().execute();
+            if (intent.getStringExtra("contact").equals(contact_username)) {
+
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                FirebaseUser user = auth.getCurrentUser();
+
+                user.getToken(false)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                                if (task.isSuccessful()) {
+
+                                    id_token = task.getResult().getToken();
+
+                                    String message = messageText.getText().toString();
+
+                                    if (!message.equals("")) {
+
+                                        new ChatAsyncTask1().execute();
+                                    }
+
+                                }
+                            }
+                        });
+
+
+
+            }
             else
                 Toast.makeText(context, intent.getStringExtra("contact")+": "+intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
         }
@@ -374,7 +407,24 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         messageList.setLayoutManager(llm);
         messageList.setAdapter(mAdapter);
 
-        new ChatAsyncTask1().execute();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = auth.getCurrentUser();
+
+        user.getToken(false)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                        if (task.isSuccessful()) {
+
+                            id_token = task.getResult().getToken();
+
+                            new ChatAsyncTask1().execute();
+
+                        }
+                    }
+                });
+
 
     }
 
@@ -384,14 +434,30 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.send_message_button:
 
-                String message = messageText.getText().toString();
+                FirebaseAuth auth = FirebaseAuth.getInstance();
 
-                if (!message.equals("")) {
+                FirebaseUser user = auth.getCurrentUser();
 
-                    new ChatAsyncTask2().execute(message);
+                user.getToken(false)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
 
-                    messageText.setText("");
-                }
+                                if (task.isSuccessful()) {
+
+                                    id_token = task.getResult().getToken();
+
+                                    String message = messageText.getText().toString();
+
+                                    if (!message.equals("")) {
+
+                                        new ChatAsyncTask2().execute(message);
+
+                                        messageText.setText("");
+                                    }
+
+                                }
+                            }
+                        });
 
                 break;
 

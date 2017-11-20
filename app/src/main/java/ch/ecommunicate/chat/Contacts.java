@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -20,7 +21,11 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -102,14 +107,27 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
 
     void update_contacts() {
 
-        new ContactsProcessor().execute();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = auth.getCurrentUser();
+
+        user.getToken(false)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                        if (task.isSuccessful()) {
+
+                            id_token = task.getResult().getToken();
+
+                            new ContactsProcessor().execute();
+
+                        }
+                    }
+                });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Intent in = getIntent();
-        id_token = in.getStringExtra("id_token");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
@@ -128,11 +146,9 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
             @Override
             public void onClick(View view) {
 
-                Intent mIntent = new Intent(Contacts.this,RespondToContactRequestsActivity.class);
+                Intent intent = new Intent(Contacts.this,RespondToContactRequestsActivity.class);
 
-                mIntent.putExtra("id_token", id_token);
-
-                startActivity(mIntent);
+                startActivity(intent);
             }
 
         });
@@ -143,11 +159,9 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
             @Override
             public void onClick(View view) {
 
-                Intent mIntent = new Intent(Contacts.this,MakeContactRequestActivity.class);
+                Intent intent = new Intent(Contacts.this,MakeContactRequestActivity.class);
 
-                mIntent.putExtra("id_token", id_token);
-
-                startActivity(mIntent);
+                startActivity(intent);
             }
 
         });
@@ -158,15 +172,14 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-        Intent mIntent = new Intent(this,Chat.class);
+        Intent intent= new Intent(this,Chat.class);
 
         //TextView contact = (TextView) view.findViewById(R.id.contact);
         //mIntent.putExtra("contact_name", contact.getText().toString());
 
-        mIntent.putExtra("contact_username",contact_list.get(position).username);
-        mIntent.putExtra("contact_name",contact_list.get(position).name);
-        mIntent.putExtra("id_token", id_token);
-        startActivity(mIntent);
+        intent.putExtra("contact_username",contact_list.get(position).username);
+        intent.putExtra("contact_name",contact_list.get(position).name);
+        startActivity(intent);
 
         contact_list.get(position).new_message = false;
 
@@ -214,8 +227,6 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
                         new OutputStreamWriter(os, "UTF-8"));
 
                 JSONObject token_json = new JSONObject();
-
-                String device_token = FirebaseInstanceId.getInstance().getToken();
 
                 token_json.put("id_token",id_token);
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -19,7 +20,11 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -83,9 +88,6 @@ public class RespondToContactRequestsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Intent in = getIntent();
-        id_token = in.getStringExtra("id_token");
-
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().setTitle("Contact Requests");
@@ -98,7 +100,23 @@ public class RespondToContactRequestsActivity extends AppCompatActivity {
 
         respondtocontactrequests_listview = (ListView) findViewById(R.id.contact_requests_listview);
 
-        new AsyncTask1().execute();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = auth.getCurrentUser();
+
+        user.getToken(false)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                        if (task.isSuccessful()) {
+
+                            id_token = task.getResult().getToken();
+
+                            new AsyncTask1().execute();
+
+                        }
+                    }
+                });
 
     }
 
