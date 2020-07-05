@@ -294,7 +294,7 @@ public class LoginActivity extends AppCompatActivity {
         if (user != null) {
 
             //doing just progress_dialog.show(...) leads to null pointer exceptions when progress_dialog.dismiss is called later
-            progress_dialog = ProgressDialog.show(context, "","Authenticating");
+            progress_dialog = ProgressDialog.show(context, "","Authenticating ");
 
             user.getToken(false)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
