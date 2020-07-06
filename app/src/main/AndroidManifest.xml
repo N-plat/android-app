@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.ecommunicate.chat">
+    package="com.nplat">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
@@ -13,15 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="ch.ecommunicate.chat.Chat">
+        <activity android:name="com.nplat.Chat">
         </activity>
-        <activity android:name="ch.ecommunicate.chat.Contacts">
+        <activity android:name="com.nplat.Contacts">
         </activity>
-        <activity android:name="ch.ecommunicate.chat.MakeContactRequestActivity">
+        <activity android:name="com.nplat.MakeContactRequestActivity">
         </activity>
-        <activity android:name="ch.ecommunicate.chat.RespondToContactRequestsActivity">
+        <activity android:name="com.nplat.RespondToContactRequestsActivity">
         </activity>
-        <activity android:name="ch.ecommunicate.chat.LoginActivity">
+        <activity android:name="com.nplat.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +30,7 @@
         </activity>
 
         <service
-            android:name="ch.ecommunicate.chat.MyFirebaseMessagingService"
+            android:name="com.nplat.MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -38,7 +38,7 @@
             </intent-filter>
         </service>
         <service
-            android:name="ch.ecommunicate.chat.MyFirebaseInstanceIdService"
+            android:name="com.nplat.MyFirebaseInstanceIdService"
             android:enabled="true"
             android:exported="true">
 

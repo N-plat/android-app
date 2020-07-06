@@ -1,4 +1,4 @@
-package ch.ecommunicate.chat;
+package com.nplat;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;

@@ -1,4 +1,4 @@
-package ch.ecommunicate.chat;
+package com.nplat;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package ch.ecommunicate.chat;
+package com.nplat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
