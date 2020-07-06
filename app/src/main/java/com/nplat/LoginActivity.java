@@ -323,7 +323,7 @@ public class LoginActivity extends AppCompatActivity {
             setContentView(R.layout.activity_login);
 
             TextView tv = (TextView) findViewById(R.id.register);
-            tv.setText(Html.fromHtml("Register at <a href=\"https://ecommunicate.ch/register/\">ecommunicate.ch</a>"));
+            tv.setText(Html.fromHtml("Register at <a href=\"https://n-plat.com/register/\">n-plat.com</a>"));
             tv.setLinksClickable(true);
             tv.setMovementMethod(LinkMovementMethod.getInstance());
 
