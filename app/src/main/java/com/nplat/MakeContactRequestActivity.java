@@ -18,7 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
+//import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -250,32 +250,6 @@ public class MakeContactRequestActivity extends AppCompatActivity {
         btnMakeContactRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-
-                FirebaseUser user = auth.getCurrentUser();
-
-                user.getToken(false)
-                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                            public void onComplete(@NonNull Task<GetTokenResult> task) {
-
-                                if (task.isSuccessful()) {
-
-                                    id_token = task.getResult().getToken();
-
-                                    EditText editContactUsername = (EditText) findViewById(R.id.contactUsernameText);
-
-                                    EditText editMessage = (EditText) findViewById(R.id.contactRequestMessageText);
-
-                                    String usernameString = editContactUsername.getText().toString();
-
-                                    String messageString = editMessage.getText().toString();
-
-                                    new AsyncTask1().execute(usernameString, messageString);
-
-                                }
-                            }
-                        });
 
 
 

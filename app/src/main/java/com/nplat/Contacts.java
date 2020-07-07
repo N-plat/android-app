@@ -22,7 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
+//import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -102,11 +102,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
 
 
     void update_contacts() {
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        FirebaseUser user = auth.getCurrentUser();
-
+/*
         user.getToken(false)
                 .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
@@ -120,6 +116,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
                         }
                     }
                 });
+ */
     }
 
     @Override

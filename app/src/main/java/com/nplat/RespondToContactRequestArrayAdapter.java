@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
+//import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONObject;
 
@@ -54,31 +54,9 @@ public class RespondToContactRequestArrayAdapter extends ArrayAdapter<RespondToC
         @Override
         protected String doInBackground(String... strings) {
 
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-
-            FirebaseUser user = auth.getCurrentUser();
-
             username = strings[0];
 
             accept = strings[1];
-
-            if (user != null) {
-
-                user.getToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-
-                        if (task.isSuccessful()) {
-
-                            id_token = task.getResult().getToken();
-
-                            new SubmitContactRequestResponse.NetworkActivity().execute();
-
-                        }
-
-                    }
-                });
-
-            }
 
             return "";
 

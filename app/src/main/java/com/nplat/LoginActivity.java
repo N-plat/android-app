@@ -20,7 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
+//import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,50 +79,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 return;
             }
-
-            auth.signInWithCustomToken(custom_token).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-
-                        FirebaseUser mUser = auth.getCurrentUser();
-
-                        mUser.getToken(true)
-                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-
-                                        if (task.isSuccessful()) {
-
-                                            id_token = task.getResult().getToken();
-
-                                            new RegisterDevice().execute();
-
-                                            Intent mIntent = new Intent(LoginActivity.this,Contacts.class);
-
-                                            if (progress_dialog != null) {
-                                                progress_dialog.dismiss();
-                                            }
-
-                                            startActivity(mIntent);
-
-                                        } else {
-
-                                            if (progress_dialog != null) {
-                                                progress_dialog.dismiss();
-                                            }
-
-                                            TextView tv = (TextView) findViewById(R.id.loginerrors);
-                                            tv.setText("Login unsuccessful");
-
-                                            return;
-                                        }
-                                    }
-                                });
-
-                    } else {
-                    }
-                }
-            });
 
         }
 
@@ -266,15 +222,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        FirebaseUser user = auth.getCurrentUser();
-
-        if (user != null) {
-
-            this.finish();
-
-        }
     }
 
     @Override
@@ -283,40 +230,12 @@ public class LoginActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Login");
 
-        auth = FirebaseAuth.getInstance();
-
-        FirebaseUser user = auth.getCurrentUser();
-
         context = this;
 
-        if (user != null) {
+        if (false) {
 
             //doing just progress_dialog.show(...) leads to null pointer exceptions when progress_dialog.dismiss is called later
             progress_dialog = ProgressDialog.show(context, "","Authenticating");
-
-            user.getToken(false)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-
-                            if (task.isSuccessful()) {
-
-                                if (progress_dialog != null) {
-                                    progress_dialog.dismiss();
-                                }
-
-                                id_token = task.getResult().getToken();
-
-                                Intent in = new Intent(LoginActivity.this, Contacts.class);
-
-                                startActivity(in);
-
-                            } else {
-                                Log.d(TAG, "task is not successful");
-
-
-                            }
-                        }
-                    });
 
         } else {
 

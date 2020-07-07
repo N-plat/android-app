@@ -15,7 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
+//import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -89,24 +89,6 @@ public class RespondToContactRequestsActivity extends AppCompatActivity {
         respondtocontactrequests_array_adapter = new RespondToContactRequestArrayAdapter(this, respondtocontactrequests_list);
 
         respondtocontactrequests_listview = (ListView) findViewById(R.id.contact_requests_listview);
-
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        FirebaseUser user = auth.getCurrentUser();
-
-        user.getToken(false)
-                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-
-                        if (task.isSuccessful()) {
-
-                            id_token = task.getResult().getToken();
-
-                            new AsyncTask1().execute();
-
-                        }
-                    }
-                });
 
     }
 

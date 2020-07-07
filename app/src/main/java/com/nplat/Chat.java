@@ -22,7 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
+//import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,11 +78,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         public void onReceive(Context context, Intent intent) {
 
             if (intent.getStringExtra("contact").equals(contact_username)) {
-
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-
-                FirebaseUser user = auth.getCurrentUser();
-
+/*
                 user.getToken(false)
                         .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                             public void onComplete(@NonNull Task<GetTokenResult> task) {
@@ -101,7 +97,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
                                 }
                             }
                         });
-
+*/
 
 
             }
@@ -407,24 +403,6 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         messageList.setLayoutManager(llm);
         messageList.setAdapter(mAdapter);
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        FirebaseUser user = auth.getCurrentUser();
-
-        user.getToken(false)
-                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-
-                        if (task.isSuccessful()) {
-
-                            id_token = task.getResult().getToken();
-
-                            new ChatAsyncTask1().execute();
-
-                        }
-                    }
-                });
-
 
     }
 
@@ -434,30 +412,6 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.send_message_button:
 
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-
-                FirebaseUser user = auth.getCurrentUser();
-
-                user.getToken(false)
-                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                            public void onComplete(@NonNull Task<GetTokenResult> task) {
-
-                                if (task.isSuccessful()) {
-
-                                    id_token = task.getResult().getToken();
-
-                                    String message = messageText.getText().toString();
-
-                                    if (!message.equals("")) {
-
-                                        new ChatAsyncTask2().execute(message);
-
-                                        messageText.setText("");
-                                    }
-
-                                }
-                            }
-                        });
 
                 break;
 

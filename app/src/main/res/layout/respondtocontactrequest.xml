@@ -46,7 +46,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contactUsernameText" />
+        app:layout_constraintTop_toBottomOf="@+id/accept_contact_request"/>
 
     <Button
         android:id="@+id/accept_contact_request"
@@ -68,8 +68,8 @@
         android:layout_height="wrap_content"
         android:text="Reject"
         android:layout_marginEnd="20dp"
-        android:layout_alignBaseline="@+id/contactUsernameText"
-        android:layout_alignBottom="@+id/contactUsernameText"
+        android:layout_alignBaseline="@+id/accept_contact_request"
+        android:layout_alignBottom="@+id/accept_contact_request"
         android:layout_toLeftOf="@+id/accept_contact_request"
         android:layout_toStartOf="@+id/accept_contact_request"
         app:layout_constraintLeft_toRightOf="@+id/accept_contact_request"
