@@ -102,7 +102,7 @@ public class RespondToContactRequestArrayAdapter extends ArrayAdapter<RespondToC
 
                 try {
 
-                    URL url = new URL("https://chat.android.ecommunicate.ch:443/submitcontactrequestresponse/");
+                    URL url = new URL("https://android.n-plat.com:443/submitcontactrequestresponse/");
 
                     HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
 

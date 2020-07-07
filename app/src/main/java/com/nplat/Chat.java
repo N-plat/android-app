@@ -130,7 +130,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
             try {
 
-                URL url = new URL("https://chat.android.ecommunicate.ch:443/messages/");
+                URL url = new URL("https://android.n-plat.com:443/messages/");
                 urlConnection = (HttpsURLConnection) url.openConnection();
 
                 urlConnection.setRequestProperty("Content-Type","application/json");
@@ -287,7 +287,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
             try {
 
-                URL url = new URL("https://chat.android.ecommunicate.ch:443/submitmessage/");
+                URL url = new URL("https://android.n-plat:443/submitmessage/");
                 urlConnection = (HttpsURLConnection) url.openConnection();
 
                 urlConnection.setRequestProperty("Content-Type","application/json");

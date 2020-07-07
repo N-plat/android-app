@@ -105,7 +105,7 @@ public class MakeContactRequestActivity extends AppCompatActivity {
 
                 String message = username_and_message[1];
 
-                URL url = new URL("https://chat.android.ecommunicate.ch:443/makecontactrequest/");
+                URL url = new URL("https://android.n-plat.com:443/makecontactrequest/");
 
                 urlConnection = (HttpsURLConnection) url.openConnection();
 

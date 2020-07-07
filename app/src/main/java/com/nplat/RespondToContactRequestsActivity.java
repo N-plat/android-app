@@ -133,7 +133,7 @@ public class RespondToContactRequestsActivity extends AppCompatActivity {
             Integer result = 0;
 
             try {
-                URL url = new URL("https://chat.android.ecommunicate.ch:443/getcontactrequests/");
+                URL url = new URL("https://android.n-plat.com:443/getcontactrequests/");
                 urlConnection = (HttpsURLConnection) url.openConnection();
 
                 urlConnection.setRequestProperty("Content-Type","application/json");
