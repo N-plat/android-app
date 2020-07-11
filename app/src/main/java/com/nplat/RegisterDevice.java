@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-//import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -39,6 +39,32 @@ public class RegisterDevice extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... strings) {
+
+        device_token = FirebaseInstanceId.getInstance().getToken();
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = auth.getCurrentUser();
+
+        if (user != null) {
+
+            user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                    if (task.isSuccessful()) {
+
+                        id_token = task.getResult().getToken();
+
+                        new NetworkActivity().execute();
+
+                    }
+
+                }
+            });
+
+        }
+
+//        new NetworkActivity().execute();
 
         return "";
 
