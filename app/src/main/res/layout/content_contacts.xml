@@ -12,34 +12,21 @@
     tools:context="com.nplat.LoginActivity"
     tools:showIn="@layout/activity_contacts">
 
+    <EditText
+        android:id="@+id/postText"
+        android:layout_width="640dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="0.98" />
+
     <Button
-        android:id="@+id/makecontactrequestsbutton"
+        android:id="@+id/postbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/respondtocontactrequestsbutton"
+        android:layout_below="@+id/postText"
         android:layout_alignParentBottom="false"
-        android:layout_centerHorizontal="true"
         android:layout_centerInParent="false"
-        android:text="Make Contact Requests" />
-
-    <Button
-        android:id="@+id/respondtocontactrequestsbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Respond To Contact requests" />
-
-    <ListView
-        android:id="@+id/contactListView"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/makecontactrequestsbutton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
-
-    </ListView>
-
+        android:text="Post" />
 
 </RelativeLayout>

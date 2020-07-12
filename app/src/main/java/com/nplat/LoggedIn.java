@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,14 +16,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -64,6 +72,8 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
     List<Contact> contact_list = null;
 
     Context context;
+
+    ProgressDialog progress_dialog;
 
     public LoggedIn() {
     }
@@ -126,32 +136,34 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
         contact_array_adapter = new ContactArrayAdapter(this, contact_list);
 
-        contact_listview = (ListView) findViewById(R.id.contactListView);
+        Button postbutton = (Button) findViewById(R.id.postbutton);
 
-        contact_listview.setOnItemClickListener(this);
-
-        Button respondtocontactrequestsbutton = (Button) findViewById(R.id.respondtocontactrequestsbutton);
-
-        respondtocontactrequestsbutton.setOnClickListener(new View.OnClickListener() {
+        postbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(LoggedIn.this,RespondToContactRequestsActivity.class);
+                FirebaseAuth auth = FirebaseAuth.getInstance();
 
-                startActivity(intent);
-            }
+                FirebaseUser user = auth.getCurrentUser();
 
-        });
+                if (user != null) {
 
-        Button makecontactrequestsbutton = (Button) findViewById(R.id.makecontactrequestsbutton);
+                    user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
 
-        makecontactrequestsbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                            if (task.isSuccessful()) {
 
-                Intent intent = new Intent(LoggedIn.this,MakeContactRequestActivity.class);
+                                id_token = task.getResult().getToken();
 
-                startActivity(intent);
+                                EditText editMessage = (EditText) findViewById(R.id.postText);
+
+                                String messageString = editMessage.getText().toString();
+
+                                new AsyncTask1().execute(messageString);
+                            }
+                        }
+                    });
+                }
             }
 
         });
@@ -300,6 +312,167 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
             inputStream.close();
         }
         return result;
+    }
+
+    public class AsyncTask1 extends AsyncTask<String, Void, String> {
+
+        private JSONObject response_json_object = null;
+
+        @Override
+        protected void onPreExecute(){
+
+            //doing just progress_dialog.show(...) leads to null pointer exceptions when progress_dialog.dismiss is called later
+            progress_dialog = ProgressDialog.show(context, "","Posting");
+
+        }
+
+        @Override
+        protected void onPostExecute(String string) {
+
+            try {
+                if (response_json_object.getBoolean("success") == false) {
+
+                    if (progress_dialog != null) {
+                        progress_dialog.dismiss();
+                    }
+
+                    TextView tv = (TextView) findViewById(R.id.makecontactrequesterrors);
+                    tv.setText(response_json_object.getString("reason"));
+
+                    return;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        protected String doInBackground(String... message) {
+            InputStream inputStream = null;
+            HttpsURLConnection urlConnection = null;
+            String response = "";
+
+            try {
+
+                URL url = new URL("https://android.n-plat.com:443/post/");
+
+                urlConnection = (HttpsURLConnection) url.openConnection();
+
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+
+                urlConnection.setRequestProperty("Accept", "application/json");
+
+                urlConnection.setDoInput(true);
+
+                urlConnection.setDoOutput(true);
+
+                OutputStream os = urlConnection.getOutputStream();
+
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+
+                JSONObject request_json_object = new JSONObject();
+
+                request_json_object.put("message",message[0]);
+                request_json_object.put("id_token",id_token);
+
+                writer.write(request_json_object.toString());
+
+                writer.flush();
+
+                writer.close();
+
+                os.close();
+
+                urlConnection.setRequestMethod("POST");
+
+                urlConnection.connect();
+
+                int statusCode = urlConnection.getResponseCode();
+
+                if (statusCode == 200) {
+                    String line;
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    while ((line=br.readLine()) != null) {
+                        response+=line;
+                    }
+
+                    try {
+
+                        response_json_object = new JSONObject(response);
+
+                    } catch (JSONException e) {
+
+                        if (e.getMessage() != null) {
+                            Log.d(TAG, e.getMessage());
+                        }
+
+                        if (e.getLocalizedMessage() != null) {
+                            Log.d(TAG, e.getLocalizedMessage());
+                        }
+
+                        if (e.getCause() != null) {
+                            Log.d(TAG, e.getCause().toString());
+                        }
+
+                        e.printStackTrace();
+                    }
+
+                } else {
+
+
+
+                }
+            }
+            catch (Exception e) {
+
+                if (e.getMessage() != null) {
+                    Log.d(TAG, e.getMessage());
+                }
+
+                if (e.getLocalizedMessage() != null) {
+                    Log.d(TAG, e.getLocalizedMessage());
+                }
+
+                if (e.getCause() != null) {
+                    Log.d(TAG, e.getCause().toString());
+                }
+
+                e.printStackTrace();
+            }
+
+            if (response_json_object != null){
+
+                try {
+                    if(response_json_object.getBoolean("success")){
+
+                        return "true";
+                    }
+
+                } catch (JSONException e) {
+
+                    if (e.getMessage() != null) {
+                        Log.d(TAG, e.getMessage());
+                    }
+
+                    if (e.getLocalizedMessage() != null) {
+                        Log.d(TAG, e.getLocalizedMessage());
+                    }
+
+                    if (e.getCause() != null) {
+                        Log.d(TAG, e.getCause().toString());
+                    }
+
+                    e.printStackTrace();
+
+                    return "false";
+                }
+
+            }
+
+            return "false";
+        }
     }
 
 }
