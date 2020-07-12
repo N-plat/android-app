@@ -5,19 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 //import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
@@ -81,7 +77,7 @@ public class MakeContactRequestActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Intent mIntent = new Intent(MakeContactRequestActivity.this,Contacts.class);
+            Intent mIntent = new Intent(MakeContactRequestActivity.this, LoggedIn.class);
 
             mIntent.putExtra("id_token", id_token);
 

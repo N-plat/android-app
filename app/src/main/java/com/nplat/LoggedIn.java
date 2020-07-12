@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,10 +18,7 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 //import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,7 +43,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by amlevin on 8/25/2017.
  */
 
-public class Contacts extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private String id_token;
 
@@ -68,7 +65,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
 
     Context context;
 
-    public Contacts() {
+    public LoggedIn() {
     }
 
     @Override
@@ -139,7 +136,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Contacts.this,RespondToContactRequestsActivity.class);
+                Intent intent = new Intent(LoggedIn.this,RespondToContactRequestsActivity.class);
 
                 startActivity(intent);
             }
@@ -152,7 +149,7 @@ public class Contacts extends AppCompatActivity implements AdapterView.OnItemCli
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Contacts.this,MakeContactRequestActivity.class);
+                Intent intent = new Intent(LoggedIn.this,MakeContactRequestActivity.class);
 
                 startActivity(intent);
             }

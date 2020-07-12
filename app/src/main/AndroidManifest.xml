@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity android:name="com.nplat.Chat">
         </activity>
-        <activity android:name="com.nplat.Contacts">
+        <activity android:name="com.nplat.LoggedIn">
         </activity>
         <activity android:name="com.nplat.MakeContactRequestActivity">
         </activity>

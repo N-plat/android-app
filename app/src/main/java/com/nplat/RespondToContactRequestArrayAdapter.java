@@ -3,7 +3,6 @@ package com.nplat;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 //import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONObject;
@@ -68,7 +63,7 @@ public class RespondToContactRequestArrayAdapter extends ArrayAdapter<RespondToC
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
 
-                Intent in = new Intent(context, Contacts.class);
+                Intent in = new Intent(context, LoggedIn.class);
 
                 in.putExtra("id_token", id_token);
 

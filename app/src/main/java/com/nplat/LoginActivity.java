@@ -20,7 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 //import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
@@ -91,8 +90,23 @@ public class LoginActivity extends AppCompatActivity {
 
                         new RegisterDevice().execute();
 
+                        Intent mIntent = new Intent(LoginActivity.this, LoggedIn.class);
+
+                        if (progress_dialog != null) {
+                            progress_dialog.dismiss();
+                        }
+
+                        startActivity(mIntent);
+
                     } else {
-                        new RegisterDevice().execute();
+                        if (progress_dialog != null) {
+                            progress_dialog.dismiss();
+                        }
+
+                        TextView tv = (TextView) findViewById(R.id.loginerrors);
+                        tv.setText("Login unsuccessful");
+
+                        return;
                     }
 
                 }
