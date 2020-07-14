@@ -98,9 +98,10 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
         @Override
         public void onReceive(Context context, Intent intent) {
             //new Chat.ChatAsyncTask1().execute();
+
             Log.d(TAG,intent.getExtras().getString("contact"));
 
-            update_contacts();
+          update_contacts();
 
 
 
@@ -336,10 +337,15 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
                         progress_dialog.dismiss();
                     }
 
-                    TextView tv = (TextView) findViewById(R.id.makecontactrequesterrors);
-                    tv.setText(response_json_object.getString("reason"));
+                    //TextView tv = (TextView) findViewById(R.id.makecontactrequesterrors);
+                    //tv.setText(response_json_object.getString("reason"));
 
                     return;
+                } else {
+
+                    if (progress_dialog != null) {
+                        progress_dialog.dismiss();
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -443,6 +449,8 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
             }
 
             if (response_json_object != null){
+
+
 
                 try {
                     if(response_json_object.getBoolean("success")){
