@@ -345,6 +345,8 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
                     if (progress_dialog != null) {
                         progress_dialog.dismiss();
+                        EditText editMessage = (EditText) findViewById(R.id.postText);
+                        editMessage.setText("");
                     }
                 }
             } catch (JSONException e) {
