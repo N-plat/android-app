@@ -13,17 +13,17 @@ import java.util.List;
  * Created by amlevin on 8/25/2017.
  */
 
-public class ContactArrayAdapter  extends ArrayAdapter<LoggedIn.Contact> {
+public class PostArrayAdapter extends ArrayAdapter<LoggedIn.Post> {
 
     private static final String TAG = "ContactArrayAdapter";
 
     private final Context context;
-    private final List<LoggedIn.Contact> contact_list;
+    private final List<LoggedIn.Post> post_list;
 
-    public ContactArrayAdapter(Context context, List<LoggedIn.Contact> contact_list) {
-        super(context, R.layout.contact, contact_list);
+    public PostArrayAdapter(Context context, List<LoggedIn.Post> post_list) {
+        super(context, R.layout.contact, post_list);
         this.context = context;
-        this.contact_list = contact_list;
+        this.post_list = post_list;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ContactArrayAdapter  extends ArrayAdapter<LoggedIn.Contact> {
         contact_view = inflater.inflate(R.layout.contact, parent, false);
         contact_textview = (TextView) contact_view.findViewById(R.id.contact);
 
-        contact_textview.setText(contact_list.get(position).text);
+        contact_textview.setText(post_list.get(position).text);
 
 
         return contact_view;

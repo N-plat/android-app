@@ -19,11 +19,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,19 +60,19 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
     ListView contact_listview;
 
-    ContactArrayAdapter contact_array_adapter;
+    PostArrayAdapter contact_array_adapter;
 
-    public class Contact {
+    public class Post {
         String text;
     }
 
-    List<Contact> contact_list = null;
+    List<Post> post_list = null;
 
     Context context;
 
     ProgressDialog progress_dialog;
 
-    void update_contacts() {
+    void update_posts() {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -88,7 +86,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
                             id_token = task.getResult().getToken();
 
-                            new LoggedIn.ContactsProcessor().execute();
+                            new PostsProcessor().execute();
 
                         }
                     }
@@ -96,11 +94,11 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
     }
 
 
-    private class ContactsProcessor extends AsyncTask<String, Void, Integer> {
+    private class PostsProcessor extends AsyncTask<String, Void, Integer> {
 
         ProgressDialog progressDialog;
 
-        public ContactsProcessor() {
+        public PostsProcessor() {
             super();
         }
 
@@ -161,7 +159,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     Gson gson = gsonBuilder.create();
 
-                    contact_list = Arrays.asList(gson.fromJson(response, Contact[].class));
+                    post_list = Arrays.asList(gson.fromJson(response, Post[].class));
 
                     result = 1;
 
@@ -194,7 +192,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            contact_array_adapter = new ContactArrayAdapter(context, contact_list);
+            contact_array_adapter = new PostArrayAdapter(context, post_list);
 
             contact_listview.setAdapter((ListAdapter) contact_array_adapter);
 
@@ -219,7 +217,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
                 new IntentFilter("new_message")
         );
 
-        update_contacts();
+        update_posts();
     }
 
     @Override
@@ -235,7 +233,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
             Log.d(TAG,intent.getExtras().getString("contact"));
 
-          update_contacts();
+          update_posts();
 
 
 
@@ -250,7 +248,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
         context = this;
 
-        contact_array_adapter = new ContactArrayAdapter(this, contact_list);
+        contact_array_adapter = new PostArrayAdapter(this, post_list);
 
         contact_listview = (ListView) findViewById(R.id.contactListView);
 
@@ -297,8 +295,8 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
         //TextView contact = (TextView) view.findViewById(R.id.contact);
         //mIntent.putExtra("contact_name", contact.getText().toString());
 
-        intent.putExtra("contact_username",contact_list.get(position).text);
-        intent.putExtra("contact_name",contact_list.get(position).text);
+        intent.putExtra("contact_username", post_list.get(position).text);
+        intent.putExtra("contact_name", post_list.get(position).text);
         startActivity(intent);
 
     }
@@ -346,9 +344,10 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
                 } else {
 
                     if (progress_dialog != null) {
-                        progress_dialog.dismiss();
                         EditText editMessage = (EditText) findViewById(R.id.postText);
                         editMessage.setText("");
+                        update_posts();
+                        progress_dialog.dismiss();
                     }
                 }
             } catch (JSONException e) {
