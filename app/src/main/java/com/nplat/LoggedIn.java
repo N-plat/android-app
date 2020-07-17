@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -64,9 +65,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
     ContactArrayAdapter contact_array_adapter;
 
     public class Contact {
-        String username;
-        String name;
-        Boolean new_message;
+        String text;
     }
 
     List<Contact> contact_list = null;
@@ -75,43 +74,13 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
     ProgressDialog progress_dialog;
 
-    public LoggedIn() {
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver),
-                new IntentFilter("new_message")
-        );
-
-        update_contacts();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-    }
-
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //new Chat.ChatAsyncTask1().execute();
-
-            Log.d(TAG,intent.getExtras().getString("contact"));
-
-          update_contacts();
-
-
-
-        }
-    };
-
-
     void update_contacts() {
-/*
-        user.getToken(false)
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = auth.getCurrentUser();
+
+        user.getIdToken(false)
                 .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
 
@@ -119,74 +88,13 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
                             id_token = task.getResult().getToken();
 
-                            new ContactsProcessor().execute();
+                            new LoggedIn.ContactsProcessor().execute();
 
                         }
                     }
                 });
- */
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contacts);
-
-        context = this;
-
-        contact_array_adapter = new ContactArrayAdapter(this, contact_list);
-
-        Button postbutton = (Button) findViewById(R.id.postbutton);
-
-        postbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-
-                FirebaseUser user = auth.getCurrentUser();
-
-                if (user != null) {
-
-                    user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-
-                            if (task.isSuccessful()) {
-
-                                id_token = task.getResult().getToken();
-
-                                EditText editMessage = (EditText) findViewById(R.id.postText);
-
-                                String messageString = editMessage.getText().toString();
-
-                                new AsyncTask1().execute(messageString);
-                            }
-                        }
-                    });
-                }
-            }
-
-        });
-
-    }
-
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
-        Intent intent= new Intent(this,Chat.class);
-
-        //TextView contact = (TextView) view.findViewById(R.id.contact);
-        //mIntent.putExtra("contact_name", contact.getText().toString());
-
-        intent.putExtra("contact_username",contact_list.get(position).username);
-        intent.putExtra("contact_name",contact_list.get(position).name);
-        startActivity(intent);
-
-        contact_list.get(position).new_message = false;
-
-    }
 
     private class ContactsProcessor extends AsyncTask<String, Void, Integer> {
 
@@ -211,7 +119,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
             Integer result = 0;
 
             try {
-                URL url = new URL("https://android.n-plat.com:443/contacts/");
+                URL url = new URL("https://android.n-plat.com:443/posts/");
                 urlConnection = (HttpsURLConnection) url.openConnection();
 
                 urlConnection.setRequestProperty("Content-Type","application/json");
@@ -299,6 +207,100 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
             progressDialog.dismiss();
         }
+    }
+
+    public LoggedIn() {
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver),
+                new IntentFilter("new_message")
+        );
+
+        update_contacts();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //new Chat.ChatAsyncTask1().execute();
+
+            Log.d(TAG,intent.getExtras().getString("contact"));
+
+          update_contacts();
+
+
+
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_contacts);
+
+        context = this;
+
+        contact_array_adapter = new ContactArrayAdapter(this, contact_list);
+
+        contact_listview = (ListView) findViewById(R.id.contactListView);
+
+        Button postbutton = (Button) findViewById(R.id.postbutton);
+
+        postbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                FirebaseUser user = auth.getCurrentUser();
+
+                if (user != null) {
+
+                    user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                            if (task.isSuccessful()) {
+
+                                id_token = task.getResult().getToken();
+
+                                EditText editMessage = (EditText) findViewById(R.id.postText);
+
+                                String messageString = editMessage.getText().toString();
+
+                                new AsyncTask1().execute(messageString);
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
+
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+        Intent intent= new Intent(this,Chat.class);
+
+        //TextView contact = (TextView) view.findViewById(R.id.contact);
+        //mIntent.putExtra("contact_name", contact.getText().toString());
+
+        intent.putExtra("contact_username",contact_list.get(position).text);
+        intent.putExtra("contact_name",contact_list.get(position).text);
+        startActivity(intent);
+
     }
 
     private String convertInputStreamToString(InputStream inputStream) throws IOException {

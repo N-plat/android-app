@@ -32,22 +32,13 @@ public class ContactArrayAdapter  extends ArrayAdapter<LoggedIn.Contact> {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-
-
         TextView contact_textview;
 
-        if (contact_list.get(position).new_message) {
-            contact_view = inflater.inflate(R.layout.contact_new_message, parent, false);
-            contact_textview = (TextView) contact_view.findViewById(R.id.contact);
-        }
-        else {
-            contact_view = inflater.inflate(R.layout.contact, parent, false);
-            contact_textview = (TextView) contact_view.findViewById(R.id.contact);
-        }
-        if (contact_list.get(position).name != "")
-            contact_textview.setText(contact_list.get(position).name);
-        else
-            contact_textview.setText(contact_list.get(position).username);
+        contact_view = inflater.inflate(R.layout.contact, parent, false);
+        contact_textview = (TextView) contact_view.findViewById(R.id.contact);
+
+        contact_textview.setText(contact_list.get(position).text);
+
 
         return contact_view;
     }

@@ -29,4 +29,13 @@
         android:layout_centerHorizontal="true"
         android:text="Post" />
 
+    <ListView
+        android:id="@+id/contactListView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/postbutton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"/>
+
 </RelativeLayout>
