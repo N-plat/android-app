@@ -13,13 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.nplat.Chat">
-        </activity>
         <activity android:name="com.nplat.LoggedIn">
         </activity>
-        <activity android:name="com.nplat.MakeContactRequestActivity">
-        </activity>
-        <activity android:name="com.nplat.RespondToContactRequestsActivity">
+        <activity android:name="com.nplat.Feed">
         </activity>
         <activity android:name="com.nplat.LoginActivity">
             <intent-filter>

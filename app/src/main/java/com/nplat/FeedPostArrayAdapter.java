@@ -9,18 +9,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by amlevin on 8/25/2017.
- */
-
-public class PostArrayAdapter extends ArrayAdapter<LoggedIn.Post> {
+public class FeedPostArrayAdapter extends ArrayAdapter<Feed.Post> {
 
     private static final String TAG = "ContactArrayAdapter";
 
     private final Context context;
-    private final List<LoggedIn.Post> post_list;
+    private final List<Feed.Post> post_list;
 
-    public PostArrayAdapter(Context context, List<LoggedIn.Post> post_list) {
+    public FeedPostArrayAdapter(Context context, List<Feed.Post> post_list) {
         super(context, R.layout.contact, post_list);
         this.context = context;
         this.post_list = post_list;
