@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         new RegisterDevice().execute();
 
-                        Intent mIntent = new Intent(LoginActivity.this, Feed.class);
+                        Intent mIntent = new Intent(LoginActivity.this, MainActivity.class);
 
                         if (progress_dialog != null) {
                             progress_dialog.dismiss();

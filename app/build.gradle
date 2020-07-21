@@ -7,8 +7,8 @@ android {
         applicationId "com.nplat"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 30
-        versionName "1.2.9"
+        versionCode 31
+        versionName "1.2.10"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -21,6 +21,7 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
