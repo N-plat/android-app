@@ -52,7 +52,10 @@ public class PageViewModel extends ViewModel {
 
 //    private LiveData<List<PageViewModel.Post>> post_list = null;
 
-    private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
+//    private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
+
+    private int mIndex = 1;
+
 //    private LiveData<String> mText = Transformations.map(mIndex, new Function<Integer, String>() {
 //        @Override
 //        public String apply(Integer input) {
@@ -63,18 +66,30 @@ public class PageViewModel extends ViewModel {
     private MutableLiveData<String> mText = new MutableLiveData<>();
 
     public void setIndex(int index) {
-        mIndex.setValue(index);
+        mIndex = index;
     }
+
+//    public void setIndex(int index) {
+//        mIndex.setValue(index);
+//    }
+
 
     public LiveData<String> getText() {
 
-        ExecuteGetAllAsyncTask();
+        if (mIndex == 1) {
+            ExecuteGetPostsAsyncTask();
+        }
+
+
+        if (mIndex == 2) {
+            ExecuteGetFeedAsyncTask();
+        }
 
         return mText;
 
     }
 
-    void ExecuteGetAllAsyncTask() {
+    void ExecuteGetPostsAsyncTask() {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -88,18 +103,39 @@ public class PageViewModel extends ViewModel {
 
                             id_token = task.getResult().getToken();
 
-                            new PageViewModel.GetAllAsyncTask().execute();
+                            new PageViewModel.GetPostsAsyncTask().execute();
 
                         }
                     }
                 });
     }
 
-    private class GetAllAsyncTask extends AsyncTask<String, Void, Integer> {
+    void ExecuteGetFeedAsyncTask() {
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = auth.getCurrentUser();
+
+        user.getIdToken(false)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                        if (task.isSuccessful()) {
+
+                            id_token = task.getResult().getToken();
+
+                            new PageViewModel.GetFeedAsyncTask().execute();
+
+                        }
+                    }
+                });
+    }
+
+    private class GetPostsAsyncTask extends AsyncTask<String, Void, Integer> {
 
         ProgressDialog progressDialog;
 
-        public GetAllAsyncTask() {
+        public GetPostsAsyncTask() {
             super();
         }
 
@@ -118,7 +154,7 @@ public class PageViewModel extends ViewModel {
             Integer result = 0;
 
             try {
-                URL url = new URL("https://android.n-plat.com:443/getall/");
+                URL url = new URL("https://android.n-plat.com:443/posts/");
                 urlConnection = (HttpsURLConnection) url.openConnection();
 
                 urlConnection.setRequestProperty("Content-Type","application/json");
@@ -193,7 +229,122 @@ public class PageViewModel extends ViewModel {
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            mIndex.setValue(post_list.size());
+//            mIndex.setValue(post_list.size());
+
+//            mText.setValue(post_list.toString());
+
+            mText.setValue(post_list.get(0).text+"\n"+post_list.get(1).text+"\n"+post_list.get(2).text+"\n"+post_list.get(3).text+"\n"+post_list.get(4).text+"\n"+post_list.get(4).text+"\n"+post_list.get(5).text+"\n"+post_list.get(6).text+"\n"+post_list.get(7).text+"\n"+post_list.get(8).text+"\n"+post_list.get(9).text);
+
+            //progressDialog.dismiss();
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+
+            progressDialog.dismiss();
+        }
+    }
+
+    private class GetFeedAsyncTask extends AsyncTask<String, Void, Integer> {
+
+        ProgressDialog progressDialog;
+
+        public GetFeedAsyncTask() {
+            super();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //progressDialog = ProgressDialog.show(context, "","Getting Contacts");
+        }
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+
+            InputStream inputStream = null;
+            HttpsURLConnection urlConnection = null;
+            Integer result = 0;
+
+            try {
+                URL url = new URL("https://android.n-plat.com:443/feed/");
+                urlConnection = (HttpsURLConnection) url.openConnection();
+
+                urlConnection.setRequestProperty("Content-Type","application/json");
+
+                urlConnection.setRequestProperty("Accept","application/json");
+
+                urlConnection.setRequestMethod("POST");
+
+                urlConnection.setDoInput(true);
+
+                urlConnection.setDoOutput(true);
+
+                OutputStream os = urlConnection.getOutputStream();
+
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+
+                JSONObject token_json = new JSONObject();
+
+                token_json.put("id_token",id_token);
+
+                writer.write(token_json.toString());
+
+                writer.flush();
+
+                writer.close();
+
+                os.close();
+
+                urlConnection.connect();
+
+                int statusCode = urlConnection.getResponseCode();
+
+                if (statusCode == 200) {
+                    inputStream = new BufferedInputStream(urlConnection.getInputStream());
+
+                    String response = convertInputStreamToString(inputStream);
+
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    Gson gson = gsonBuilder.create();
+
+                    post_list = Arrays.asList(gson.fromJson(response, PageViewModel.Post[].class));
+
+                    result = 1;
+
+                }
+                else {
+                    result = 0;
+
+                }
+
+            } catch (Exception e) {
+
+                if (e.getMessage() != null) {
+                    Log.d(TAG, e.getMessage());
+                }
+
+                if (e.getLocalizedMessage() != null) {
+                    Log.d(TAG, e.getLocalizedMessage());
+                }
+
+                if (e.getCause() != null) {
+                    Log.d(TAG, e.getCause().toString());
+                }
+
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+
+//            mIndex.setValue(post_list.size());
 
 //            mText.setValue(post_list.toString());
 
