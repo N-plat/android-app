@@ -518,7 +518,7 @@ public class PageViewModel extends ViewModel {
 
 //            mText.setValue(post_list.toString());
 
-            mText.setValue(username_list.get(0).username+"\n"+username_list.get(1).username+"\n"+username_list.get(2).username+"\n"+username_list.get(3).username+"\n"+username_list.get(4).username+"\n"+username_list.get(4).username+"\n"+username_list.get(5).username+"\n"+username_list.get(6).username+"\n"+username_list.get(7).username+"\n"+username_list.get(8).username+"\n"+username_list.get(9).username);
+            mText.setValue(username_list.get(0).username+"\n"+username_list.get(1).username+"\n"+username_list.get(2).username+"\n"+username_list.get(3).username+"\n"+username_list.get(4).username+"\n"+username_list.get(5).username+"\n"+username_list.get(6).username+"\n"+username_list.get(7).username+"\n"+username_list.get(8).username+"\n"+username_list.get(9).username);
 
             //progressDialog.dismiss();
         }
@@ -633,7 +633,7 @@ public class PageViewModel extends ViewModel {
 
 //            mText.setValue(post_list.toString());
 
-            mText.setValue(username_list.get(0).username+"\n"+username_list.get(1).username+"\n"+username_list.get(2).username+"\n"+username_list.get(3).username+"\n"+username_list.get(4).username+"\n"+username_list.get(4).username+"\n"+username_list.get(5).username+"\n"+username_list.get(6).username+"\n"+username_list.get(7).username+"\n"+username_list.get(8).username+"\n"+username_list.get(9).username);
+            mText.setValue(username_list.get(0).username+"\n"+username_list.get(1).username+"\n"+username_list.get(2).username+"\n"+username_list.get(3).username+"\n"+username_list.get(4).username+"\n"+username_list.get(5).username+"\n"+username_list.get(6).username+"\n"+username_list.get(7).username+"\n"+username_list.get(8).username+"\n"+username_list.get(9).username);
 
             //progressDialog.dismiss();
         }
