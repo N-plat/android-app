@@ -2,7 +2,6 @@ package com.nplat;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -74,16 +73,16 @@ public class FollowActivity extends AppCompatActivity {
                         progress_dialog.dismiss();
                     }
 
-                    TextView tv = (TextView) findViewById(R.id.makecontactrequesterrors);
+                    TextView tv = (TextView) findViewById(R.id.followerrors);
                     tv.setText(response_json_object.getString("reason"));
 
                     return;
                 }
 
                 else {
-                    TextView tv = (TextView) findViewById(R.id.makecontactrequesterrors);
+                    TextView tv = (TextView) findViewById(R.id.followerrors);
                     tv.setText("");
-                    EditText editMessage = (EditText) findViewById(R.id.contactUsernameText);
+                    EditText editMessage = (EditText) findViewById(R.id.followUsernameText);
                     editMessage.setText("");
                 }
             } catch (JSONException e) {
@@ -235,11 +234,11 @@ public class FollowActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_makecontactrequest);
+        setContentView(R.layout.activity_follow);
 
         context = this;
 
-        Button btnMakeContactRequest = (Button) findViewById(R.id.btnMakeContactRequest);
+        Button btnMakeContactRequest = (Button) findViewById(R.id.btnFollow);
         btnMakeContactRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -257,7 +256,7 @@ public class FollowActivity extends AppCompatActivity {
 
                                 id_token = task.getResult().getToken();
 
-                                EditText editUsername = (EditText) findViewById(R.id.contactUsernameText);
+                                EditText editUsername = (EditText) findViewById(R.id.followUsernameText);
 
                                 String usernameString = editUsername.getText().toString();
 

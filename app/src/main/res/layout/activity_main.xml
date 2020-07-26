@@ -38,14 +38,14 @@
 
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnPostActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="Post" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnFollowActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
