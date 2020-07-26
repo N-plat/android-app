@@ -92,6 +92,19 @@ public class MainActivity extends AppCompatActivity {
                 }
         });
 
+        Button followbutton = (Button) findViewById(R.id.button);
+
+        followbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent mIntent = new Intent(MainActivity.this, FollowActivity.class);
+
+                startActivity(mIntent);
+
+            }
+        });
+
 
     }
 }

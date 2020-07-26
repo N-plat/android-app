@@ -6,14 +6,20 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 //import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
@@ -30,9 +36,9 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class MakeContactRequestActivity extends AppCompatActivity {
+public class FollowActivity extends AppCompatActivity {
 
-    private static final String TAG = "MakeContactRequest";
+    private static final String TAG = "Follow";
 
     private String custom_token;
     private String id_token;
@@ -52,7 +58,7 @@ public class MakeContactRequestActivity extends AppCompatActivity {
         protected void onPreExecute(){
 
             //doing just progress_dialog.show(...) leads to null pointer exceptions when progress_dialog.dismiss is called later
-            progress_dialog = ProgressDialog.show(context, "","Processing Contact Request");
+            progress_dialog = ProgressDialog.show(context, "","Processing Follow Request");
 
         }
 
@@ -73,35 +79,33 @@ public class MakeContactRequestActivity extends AppCompatActivity {
 
                     return;
                 }
+
+                else {
+                    TextView tv = (TextView) findViewById(R.id.makecontactrequesterrors);
+                    tv.setText("");
+                    EditText editMessage = (EditText) findViewById(R.id.contactUsernameText);
+                    editMessage.setText("");
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            Intent mIntent = new Intent(MakeContactRequestActivity.this, LoggedIn.class);
-
-            mIntent.putExtra("id_token", id_token);
 
             if (progress_dialog != null) {
                 progress_dialog.dismiss();
             }
 
-            startActivity(mIntent);
 
         }
 
         @Override
-        protected String doInBackground(String... username_and_message) {
+        protected String doInBackground(String... username) {
             InputStream inputStream = null;
             HttpsURLConnection urlConnection = null;
             String response = "";
 
             try {
 
-                String username = username_and_message[0];
-
-                String message = username_and_message[1];
-
-                URL url = new URL("https://android.n-plat.com:443/makecontactrequest/");
+                URL url = new URL("https://android.n-plat.com:443/follow/");
 
                 urlConnection = (HttpsURLConnection) url.openConnection();
 
@@ -120,8 +124,7 @@ public class MakeContactRequestActivity extends AppCompatActivity {
 
                 JSONObject request_json_object = new JSONObject();
 
-                request_json_object.put("username",username);
-                request_json_object.put("message",message);
+                request_json_object.put("username",username[0]);
                 request_json_object.put("id_token",id_token);
 
                 writer.write(request_json_object.toString());
@@ -232,21 +235,37 @@ public class MakeContactRequestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        getSupportActionBar().setTitle("Make Contact Requests");
-
-        context = this;
-
         setContentView(R.layout.activity_makecontactrequest);
 
-        Intent in = getIntent();
-        id_token = in.getStringExtra("id_token");
+        context = this;
 
         Button btnMakeContactRequest = (Button) findViewById(R.id.btnMakeContactRequest);
         btnMakeContactRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                FirebaseUser user = auth.getCurrentUser();
+
+                if (user != null) {
+
+                    user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                            if (task.isSuccessful()) {
+
+                                id_token = task.getResult().getToken();
+
+                                EditText editUsername = (EditText) findViewById(R.id.contactUsernameText);
+
+                                String usernameString = editUsername.getText().toString();
+
+                                new FollowActivity.AsyncTask1().execute(usernameString);
+                            }
+                        }
+                    });
+                }
 
 
             }
