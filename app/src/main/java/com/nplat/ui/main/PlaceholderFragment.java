@@ -16,9 +16,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nplat.FeedPostArrayAdapter;
+import com.nplat.MainActivityPostArrayAdapter;
 import com.nplat.R;
-import com.nplat.UsernameArrayAdapter;
+import com.nplat.MainActivityUsernameArrayAdapter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,11 +32,11 @@ public class PlaceholderFragment extends Fragment {
 
     private PageViewModel pageViewModel;
 
-    ListView feed_listview;
+    ListView listview;
 
-    FeedPostArrayAdapter feed_array_adapter;
+    MainActivityPostArrayAdapter post_array_adapter;
 
-    UsernameArrayAdapter username_array_adapter;
+    MainActivityUsernameArrayAdapter username_array_adapter;
 
     List<PageViewModel.Post> post_list;
 
@@ -81,23 +81,23 @@ public class PlaceholderFragment extends Fragment {
 
                     post_list = Arrays.asList(gson.fromJson(s, PageViewModel.Post[].class));
 
-                    feed_array_adapter = new FeedPostArrayAdapter(getContext(), post_list);
+                    post_array_adapter = new MainActivityPostArrayAdapter(getContext(), post_list);
 
-                    feed_listview.setAdapter((ListAdapter) feed_array_adapter);
+                    listview.setAdapter((ListAdapter) post_array_adapter);
 
                 } else {
 
                     username_list = Arrays.asList(gson.fromJson(s, PageViewModel.Username[].class));
 
-                    username_array_adapter = new UsernameArrayAdapter(getContext(), username_list);
+                    username_array_adapter = new MainActivityUsernameArrayAdapter(getContext(), username_list);
 
-                    feed_listview.setAdapter((ListAdapter) username_array_adapter);
+                    listview.setAdapter((ListAdapter) username_array_adapter);
 
                 }
             }
         });
 
-        feed_listview = (ListView) root.findViewById(R.id.feed2ListView);
+        listview = (ListView) root.findViewById(R.id.feed2ListView);
 
 //        feed_listview = (ListView) findViewById(R.id.feedListView);
 

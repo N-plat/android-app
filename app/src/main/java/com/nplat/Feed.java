@@ -57,7 +57,7 @@ public class Feed extends AppCompatActivity implements AdapterView.OnItemClickLi
 
     ListView feed_listview;
 
-    FeedPostArrayAdapter feed_array_adapter;
+    MainActivityPostArrayAdapter feed_array_adapter;
 
     public class Post {
         String text;

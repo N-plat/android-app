@@ -60,7 +60,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
     ListView contact_listview;
 
-    PostArrayAdapter contact_array_adapter;
+    PostActivityPostArrayAdapter contact_array_adapter;
 
     public class Post {
         String text;
@@ -192,7 +192,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            contact_array_adapter = new PostArrayAdapter(context, post_list);
+            contact_array_adapter = new PostActivityPostArrayAdapter(context, post_list);
 
             contact_listview.setAdapter((ListAdapter) contact_array_adapter);
 
@@ -248,7 +248,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
         context = this;
 
-        contact_array_adapter = new PostArrayAdapter(this, post_list);
+        contact_array_adapter = new PostActivityPostArrayAdapter(this, post_list);
 
         contact_listview = (ListView) findViewById(R.id.contactListView);
 

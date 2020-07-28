@@ -3,8 +3,6 @@ package com.nplat.ui.main;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -13,9 +11,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nplat.FeedPostArrayAdapter;
-import com.nplat.MainActivity;
-import com.nplat.R;
 
 import org.json.JSONObject;
 
@@ -34,10 +29,8 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 public class PageViewModel extends ViewModel {

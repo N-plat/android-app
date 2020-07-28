@@ -7,21 +7,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.nplat.ui.main.PageViewModel;
-
 import java.util.List;
 
-public class UsernameArrayAdapter extends ArrayAdapter<PageViewModel.Username> {
+/**
+ * Created by amlevin on 8/25/2017.
+ */
+
+public class PostActivityPostArrayAdapter extends ArrayAdapter<PostActivity.Post> {
 
     private static final String TAG = "ContactArrayAdapter";
 
     private final Context context;
-    private final List<PageViewModel.Username> username_list;
+    private final List<PostActivity.Post> post_list;
 
-    public UsernameArrayAdapter(Context context, List<PageViewModel.Username> username_list) {
-        super(context, R.layout.contact, username_list);
+    public PostActivityPostArrayAdapter(Context context, List<PostActivity.Post> post_list) {
+        super(context, R.layout.contact, post_list);
         this.context = context;
-        this.username_list = username_list;
+        this.post_list = post_list;
     }
 
     @Override
@@ -35,9 +37,11 @@ public class UsernameArrayAdapter extends ArrayAdapter<PageViewModel.Username> {
         contact_view = inflater.inflate(R.layout.contact, parent, false);
         contact_textview = (TextView) contact_view.findViewById(R.id.contact);
 
-        contact_textview.setText(username_list.get(position).username);
+        contact_textview.setText(post_list.get(position).text);
 
 
         return contact_view;
     }
+
 }
+

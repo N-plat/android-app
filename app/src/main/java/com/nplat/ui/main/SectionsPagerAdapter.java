@@ -1,7 +1,6 @@
 package com.nplat.ui.main;
 
 import android.content.Context;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -10,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.nplat.FeedPostArrayAdapter;
+import com.nplat.MainActivityPostArrayAdapter;
 import com.nplat.R;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     ListView feed_listview;
 
-    FeedPostArrayAdapter feed_array_adapter;
+    MainActivityPostArrayAdapter feed_array_adapter;
 
     List<PageViewModel.Post> post_list = null;
 

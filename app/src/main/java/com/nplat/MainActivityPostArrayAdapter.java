@@ -11,14 +11,14 @@ import com.nplat.ui.main.PageViewModel;
 
 import java.util.List;
 
-public class FeedPostArrayAdapter extends ArrayAdapter<PageViewModel.Post> {
+public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Post> {
 
     private static final String TAG = "ContactArrayAdapter";
 
     private final Context context;
     private final List<PageViewModel.Post> post_list;
 
-    public FeedPostArrayAdapter(Context context, List<PageViewModel.Post> post_list) {
+    public MainActivityPostArrayAdapter(Context context, List<PageViewModel.Post> post_list) {
         super(context, R.layout.contact, post_list);
         this.context = context;
         this.post_list = post_list;
