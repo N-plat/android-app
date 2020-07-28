@@ -50,7 +50,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by amlevin on 8/25/2017.
  */
 
-public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class PostActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private String id_token;
 
@@ -60,7 +60,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
     ListView contact_listview;
 
-    LoggedInPostArrayAdapter contact_array_adapter;
+    PostArrayAdapter contact_array_adapter;
 
     public class Post {
         String text;
@@ -192,7 +192,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            contact_array_adapter = new LoggedInPostArrayAdapter(context, post_list);
+            contact_array_adapter = new PostArrayAdapter(context, post_list);
 
             contact_listview.setAdapter((ListAdapter) contact_array_adapter);
 
@@ -207,7 +207,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
         }
     }
 
-    public LoggedIn() {
+    public PostActivity() {
     }
 
     @Override
@@ -248,7 +248,7 @@ public class LoggedIn extends AppCompatActivity implements AdapterView.OnItemCli
 
         context = this;
 
-        contact_array_adapter = new LoggedInPostArrayAdapter(this, post_list);
+        contact_array_adapter = new PostArrayAdapter(this, post_list);
 
         contact_listview = (ListView) findViewById(R.id.contactListView);
 

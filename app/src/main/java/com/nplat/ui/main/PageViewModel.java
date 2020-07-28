@@ -3,6 +3,8 @@ package com.nplat.ui.main;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -11,7 +13,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nplat.FeedPostArrayAdapter;
 import com.nplat.MainActivity;
+import com.nplat.R;
 
 import org.json.JSONObject;
 
@@ -44,12 +48,12 @@ public class PageViewModel extends ViewModel {
 
     private static final String TAG="PageViewModel";
 
-    public class Post {
-        String text;
+    public static class Post {
+        public String text;
     }
 
     public class Username {
-        String username;
+        public String username;
     }
 
     List<PageViewModel.Post> post_list = null;
@@ -60,7 +64,7 @@ public class PageViewModel extends ViewModel {
 
 //    private MutableLiveData<Integer> mIndex = new MutableLiveData<>();
 
-    private int mIndex = 1;
+    public int mIndex = 1;
 
 //    private LiveData<String> mText = Transformations.map(mIndex, new Function<Integer, String>() {
 //        @Override
@@ -70,6 +74,8 @@ public class PageViewModel extends ViewModel {
 //    });
 
     private MutableLiveData<String> mText = new MutableLiveData<>();
+
+    private MutableLiveData<List<PageViewModel.Post>> mList = new MutableLiveData<>();
 
     public void setIndex(int index) {
         mIndex = index;
@@ -99,6 +105,28 @@ public class PageViewModel extends ViewModel {
         }
 
         return mText;
+
+    }
+
+    public LiveData<List<PageViewModel.Post>> getList() {
+
+        if (mIndex == 1) {
+            ExecuteGetPostsAsyncTask();
+        }
+
+        if (mIndex == 2) {
+            ExecuteGetFeedAsyncTask();
+        }
+
+        if (mIndex == 3) {
+            ExecuteGetFollowingAsyncTask();
+        }
+
+        if (mIndex == 4) {
+            ExecuteGetFollowersAsyncTask();
+        }
+
+        return mList;
 
     }
 
@@ -190,6 +218,8 @@ public class PageViewModel extends ViewModel {
 
         ProgressDialog progressDialog;
 
+        private String response;
+
         public GetPostsAsyncTask() {
             super();
         }
@@ -246,7 +276,7 @@ public class PageViewModel extends ViewModel {
                 if (statusCode == 200) {
                     inputStream = new BufferedInputStream(urlConnection.getInputStream());
 
-                    String response = convertInputStreamToString(inputStream);
+                    response = convertInputStreamToString(inputStream);
 
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     Gson gson = gsonBuilder.create();
@@ -288,7 +318,9 @@ public class PageViewModel extends ViewModel {
 
 //            mText.setValue(post_list.toString());
 
-            mText.setValue(post_list.get(0).text+"\n"+post_list.get(1).text+"\n"+post_list.get(2).text+"\n"+post_list.get(3).text+"\n"+post_list.get(4).text+"\n"+post_list.get(4).text+"\n"+post_list.get(5).text+"\n"+post_list.get(6).text+"\n"+post_list.get(7).text+"\n"+post_list.get(8).text+"\n"+post_list.get(9).text);
+            //mText.setValue(post_list.get(0).text+"\n"+post_list.get(1).text+"\n"+post_list.get(2).text+"\n"+post_list.get(3).text+"\n"+post_list.get(4).text+"\n"+post_list.get(4).text+"\n"+post_list.get(5).text+"\n"+post_list.get(6).text+"\n"+post_list.get(7).text+"\n"+post_list.get(8).text+"\n"+post_list.get(9).text);
+
+            mText.setValue(response);
 
             //progressDialog.dismiss();
         }
@@ -304,6 +336,8 @@ public class PageViewModel extends ViewModel {
     private class GetFeedAsyncTask extends AsyncTask<String, Void, Integer> {
 
         ProgressDialog progressDialog;
+
+        private String response;
 
         public GetFeedAsyncTask() {
             super();
@@ -361,12 +395,14 @@ public class PageViewModel extends ViewModel {
                 if (statusCode == 200) {
                     inputStream = new BufferedInputStream(urlConnection.getInputStream());
 
-                    String response = convertInputStreamToString(inputStream);
+                    response = convertInputStreamToString(inputStream);
 
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     Gson gson = gsonBuilder.create();
 
                     post_list = Arrays.asList(gson.fromJson(response, PageViewModel.Post[].class));
+
+                    mText.setValue(response);
 
                     result = 1;
 
@@ -403,7 +439,9 @@ public class PageViewModel extends ViewModel {
 
 //            mText.setValue(post_list.toString());
 
-            mText.setValue(post_list.get(0).text+"\n"+post_list.get(1).text+"\n"+post_list.get(2).text+"\n"+post_list.get(3).text+"\n"+post_list.get(4).text+"\n"+post_list.get(4).text+"\n"+post_list.get(5).text+"\n"+post_list.get(6).text+"\n"+post_list.get(7).text+"\n"+post_list.get(8).text+"\n"+post_list.get(9).text);
+//            mText.setValue(post_list.get(0).text+"\n"+post_list.get(1).text+"\n"+post_list.get(2).text+"\n"+post_list.get(3).text+"\n"+post_list.get(4).text+"\n"+post_list.get(4).text+"\n"+post_list.get(5).text+"\n"+post_list.get(6).text+"\n"+post_list.get(7).text+"\n"+post_list.get(8).text+"\n"+post_list.get(9).text);
+
+            mText.setValue(response);
 
             //progressDialog.dismiss();
         }
@@ -419,6 +457,8 @@ public class PageViewModel extends ViewModel {
     private class GetFollowersAsyncTask extends AsyncTask<String, Void, Integer> {
 
         ProgressDialog progressDialog;
+
+        private String response;
 
         public GetFollowersAsyncTask() {
             super();
@@ -476,7 +516,7 @@ public class PageViewModel extends ViewModel {
                 if (statusCode == 200) {
                     inputStream = new BufferedInputStream(urlConnection.getInputStream());
 
-                    String response = convertInputStreamToString(inputStream);
+                    response = convertInputStreamToString(inputStream);
 
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     Gson gson = gsonBuilder.create();
@@ -518,7 +558,9 @@ public class PageViewModel extends ViewModel {
 
 //            mText.setValue(post_list.toString());
 
-            mText.setValue(username_list.get(0).username+"\n"+username_list.get(1).username+"\n"+username_list.get(2).username+"\n"+username_list.get(3).username+"\n"+username_list.get(4).username+"\n"+username_list.get(5).username+"\n"+username_list.get(6).username+"\n"+username_list.get(7).username+"\n"+username_list.get(8).username+"\n"+username_list.get(9).username);
+//            mText.setValue(username_list.get(0).username+"\n"+username_list.get(1).username+"\n"+username_list.get(2).username+"\n"+username_list.get(3).username+"\n"+username_list.get(4).username+"\n"+username_list.get(5).username+"\n"+username_list.get(6).username+"\n"+username_list.get(7).username+"\n"+username_list.get(8).username+"\n"+username_list.get(9).username);
+
+            mText.setValue(response);
 
             //progressDialog.dismiss();
         }
@@ -534,6 +576,8 @@ public class PageViewModel extends ViewModel {
     private class GetFollowingAsyncTask extends AsyncTask<String, Void, Integer> {
 
         ProgressDialog progressDialog;
+
+        private String response;
 
         public GetFollowingAsyncTask() {
             super();
@@ -591,7 +635,7 @@ public class PageViewModel extends ViewModel {
                 if (statusCode == 200) {
                     inputStream = new BufferedInputStream(urlConnection.getInputStream());
 
-                    String response = convertInputStreamToString(inputStream);
+                    response = convertInputStreamToString(inputStream);
 
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     Gson gson = gsonBuilder.create();
@@ -633,7 +677,9 @@ public class PageViewModel extends ViewModel {
 
 //            mText.setValue(post_list.toString());
 
-            mText.setValue(username_list.get(0).username+"\n"+username_list.get(1).username+"\n"+username_list.get(2).username+"\n"+username_list.get(3).username+"\n"+username_list.get(4).username+"\n"+username_list.get(5).username+"\n"+username_list.get(6).username+"\n"+username_list.get(7).username+"\n"+username_list.get(8).username+"\n"+username_list.get(9).username);
+//            mText.setValue(username_list.get(0).username+"\n"+username_list.get(1).username+"\n"+username_list.get(2).username+"\n"+username_list.get(3).username+"\n"+username_list.get(4).username+"\n"+username_list.get(5).username+"\n"+username_list.get(6).username+"\n"+username_list.get(7).username+"\n"+username_list.get(8).username+"\n"+username_list.get(9).username);
+
+            mText.setValue(response);
 
             //progressDialog.dismiss();
         }

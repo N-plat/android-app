@@ -7,18 +7,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.nplat.ui.main.PageViewModel;
-
 import java.util.List;
 
-public class FeedPostArrayAdapter extends ArrayAdapter<PageViewModel.Post> {
+/**
+ * Created by amlevin on 8/25/2017.
+ */
+
+public class PostArrayAdapter extends ArrayAdapter<PostActivity.Post> {
 
     private static final String TAG = "ContactArrayAdapter";
 
     private final Context context;
-    private final List<PageViewModel.Post> post_list;
+    private final List<PostActivity.Post> post_list;
 
-    public FeedPostArrayAdapter(Context context, List<PageViewModel.Post> post_list) {
+    public PostArrayAdapter(Context context, List<PostActivity.Post> post_list) {
         super(context, R.layout.contact, post_list);
         this.context = context;
         this.post_list = post_list;
@@ -40,4 +42,6 @@ public class FeedPostArrayAdapter extends ArrayAdapter<PageViewModel.Post> {
 
         return contact_view;
     }
+
 }
+

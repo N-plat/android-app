@@ -63,7 +63,7 @@ public class RespondToContactRequestArrayAdapter extends ArrayAdapter<RespondToC
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
 
-                Intent in = new Intent(context, LoggedIn.class);
+                Intent in = new Intent(context, PostActivity.class);
 
                 in.putExtra("id_token", id_token);
 

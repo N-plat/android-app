@@ -189,7 +189,7 @@ public class Feed extends AppCompatActivity implements AdapterView.OnItemClickLi
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            feed_array_adapter = new FeedPostArrayAdapter(context, post_list);
+//            feed_array_adapter = new FeedPostArrayAdapter(context, post_list);
 
             feed_listview.setAdapter((ListAdapter) feed_array_adapter);
 
@@ -245,7 +245,7 @@ public class Feed extends AppCompatActivity implements AdapterView.OnItemClickLi
 
         context = this;
 
-        feed_array_adapter = new FeedPostArrayAdapter(this, post_list);
+//        feed_array_adapter = new FeedPostArrayAdapter(this, post_list);
 
         feed_listview = (ListView) findViewById(R.id.feedListView);
 

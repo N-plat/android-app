@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,7 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.nplat.FeedPostArrayAdapter;
 import com.nplat.R;
+import com.nplat.UsernameArrayAdapter;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -22,6 +31,18 @@ public class PlaceholderFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     private PageViewModel pageViewModel;
+
+    ListView feed_listview;
+
+    FeedPostArrayAdapter feed_array_adapter;
+
+    UsernameArrayAdapter username_array_adapter;
+
+    List<PageViewModel.Post> post_list;
+
+    List<PageViewModel.Username> username_list;
+
+    PageViewModel.Post mypost;
 
     public static PlaceholderFragment newInstance(int index) {
         PlaceholderFragment fragment = new PlaceholderFragment();
@@ -51,9 +72,35 @@ public class PlaceholderFragment extends Fragment {
         pageViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+//                textView.setText(s);
+
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                Gson gson = gsonBuilder.create();
+
+                if (pageViewModel.mIndex == 1 || pageViewModel.mIndex == 2) {
+
+                    post_list = Arrays.asList(gson.fromJson(s, PageViewModel.Post[].class));
+
+                    feed_array_adapter = new FeedPostArrayAdapter(getContext(), post_list);
+
+                    feed_listview.setAdapter((ListAdapter) feed_array_adapter);
+
+                } else {
+
+                    username_list = Arrays.asList(gson.fromJson(s, PageViewModel.Username[].class));
+
+                    username_array_adapter = new UsernameArrayAdapter(getContext(), username_list);
+
+                    feed_listview.setAdapter((ListAdapter) username_array_adapter);
+
+                }
             }
         });
+
+        feed_listview = (ListView) root.findViewById(R.id.feed2ListView);
+
+//        feed_listview = (ListView) findViewById(R.id.feedListView);
+
         return root;
     }
 }
