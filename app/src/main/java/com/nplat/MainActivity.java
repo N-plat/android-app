@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     public class Post {
         String text;
+        String username;
     }
 
     List<MainActivity.Post> post_list = null;

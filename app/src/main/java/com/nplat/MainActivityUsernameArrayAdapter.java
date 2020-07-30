@@ -19,25 +19,25 @@ public class MainActivityUsernameArrayAdapter extends ArrayAdapter<PageViewModel
     private final List<PageViewModel.Username> username_list;
 
     public MainActivityUsernameArrayAdapter(Context context, List<PageViewModel.Username> username_list) {
-        super(context, R.layout.contact, username_list);
+        super(context, R.layout.post, username_list);
         this.context = context;
         this.username_list = username_list;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View contact_view;
+        View post_view;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         TextView contact_textview;
 
-        contact_view = inflater.inflate(R.layout.contact, parent, false);
-        contact_textview = (TextView) contact_view.findViewById(R.id.contact);
+        post_view = inflater.inflate(R.layout.username, parent, false);
+        contact_textview = (TextView) post_view.findViewById(R.id.username);
 
         contact_textview.setText(username_list.get(position).username);
 
 
-        return contact_view;
+        return post_view;
     }
 }

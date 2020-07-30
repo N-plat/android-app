@@ -64,6 +64,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public class Post {
         String text;
+        String username;
     }
 
     List<Post> post_list = null;
@@ -231,7 +232,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         public void onReceive(Context context, Intent intent) {
             //new Chat.ChatAsyncTask1().execute();
 
-            Log.d(TAG,intent.getExtras().getString("contact"));
+            Log.d(TAG,intent.getExtras().getString("post"));
 
           update_posts();
 
@@ -292,8 +293,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
         Intent intent= new Intent(this,Chat.class);
 
-        //TextView contact = (TextView) view.findViewById(R.id.contact);
-        //mIntent.putExtra("contact_name", contact.getText().toString());
+        //TextView post = (TextView) view.findViewById(R.id.post);
+        //mIntent.putExtra("contact_name", post.getText().toString());
 
         intent.putExtra("contact_username", post_list.get(position).text);
         intent.putExtra("contact_name", post_list.get(position).text);

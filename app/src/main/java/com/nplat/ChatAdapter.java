@@ -112,10 +112,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (messages.get(position).forward())
-            return VIEW_HOLDER_TYPE_1;
-        else
-            return VIEW_HOLDER_TYPE_2;
+        return VIEW_HOLDER_TYPE_1;
     }
 
     @Override

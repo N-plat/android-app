@@ -7,7 +7,6 @@ public class Message {
     private String username;
     private String name;
     private String message;
-    private boolean forward;
     private Date date;
 
     public Message() {
@@ -17,7 +16,6 @@ public class Message {
         this.username = username;
         this.name = name;
         this.message = message;
-        this.forward = forward;
         this.date = date;
     }
 
@@ -39,14 +37,6 @@ public class Message {
 
     public void set_message(String message) {
         this.message = message;
-    }
-
-    public boolean forward() {
-        return forward;
-    }
-
-    public void set_forward(boolean forward) {
-        this.forward = forward;
     }
 
     public void set_date(Date date) { this.date = date; }

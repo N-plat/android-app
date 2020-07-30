@@ -13,31 +13,33 @@ import java.util.List;
 
 public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Post> {
 
-    private static final String TAG = "ContactArrayAdapter";
+    private static final String TAG = "MainActivityPostArrayAdapter";
 
     private final Context context;
     private final List<PageViewModel.Post> post_list;
 
     public MainActivityPostArrayAdapter(Context context, List<PageViewModel.Post> post_list) {
-        super(context, R.layout.contact, post_list);
+        super(context, R.layout.post, post_list);
         this.context = context;
         this.post_list = post_list;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View contact_view;
+        View post_view;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        TextView contact_textview;
+        TextView text_textview;
+        TextView username_textview;
 
-        contact_view = inflater.inflate(R.layout.contact, parent, false);
-        contact_textview = (TextView) contact_view.findViewById(R.id.contact);
+        post_view = inflater.inflate(R.layout.post, parent, false);
+        text_textview = (TextView) post_view.findViewById(R.id.text);
+        username_textview = (TextView) post_view.findViewById(R.id.username);
 
-        contact_textview.setText(post_list.get(position).text);
+        text_textview.setText(post_list.get(position).text);
+        username_textview.setText(post_list.get(position).username);
 
-
-        return contact_view;
+        return post_view;
     }
 }

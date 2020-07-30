@@ -12,10 +12,10 @@
 
 
     <TextView
-        android:id="@+id/contact"
+        android:id="@+id/username"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Contact name"
+        android:text="Username"
         android:textSize="25sp" />
 
 </RelativeLayout>

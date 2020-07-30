@@ -43,6 +43,7 @@ public class PageViewModel extends ViewModel {
 
     public static class Post {
         public String text;
+        public String username;
     }
 
     public class Username {

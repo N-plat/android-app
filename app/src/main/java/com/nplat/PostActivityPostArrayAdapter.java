@@ -21,7 +21,7 @@ public class PostActivityPostArrayAdapter extends ArrayAdapter<PostActivity.Post
     private final List<PostActivity.Post> post_list;
 
     public PostActivityPostArrayAdapter(Context context, List<PostActivity.Post> post_list) {
-        super(context, R.layout.contact, post_list);
+        super(context, R.layout.post, post_list);
         this.context = context;
         this.post_list = post_list;
     }
@@ -33,11 +33,14 @@ public class PostActivityPostArrayAdapter extends ArrayAdapter<PostActivity.Post
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         TextView contact_textview;
+        TextView contact_usernameview;
 
-        contact_view = inflater.inflate(R.layout.contact, parent, false);
-        contact_textview = (TextView) contact_view.findViewById(R.id.contact);
+        contact_view = inflater.inflate(R.layout.post, parent, false);
+        contact_textview = (TextView) contact_view.findViewById(R.id.text);
+        contact_usernameview = (TextView) contact_view.findViewById(R.id.username);
 
         contact_textview.setText(post_list.get(position).text);
+        contact_usernameview.setText(post_list.get(position).username);
 
 
         return contact_view;

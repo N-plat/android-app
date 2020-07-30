@@ -228,7 +228,7 @@ public class Feed extends AppCompatActivity implements AdapterView.OnItemClickLi
         public void onReceive(Context context, Intent intent) {
             //new Chat.ChatAsyncTask1().execute();
 
-            Log.d(TAG,intent.getExtras().getString("contact"));
+            Log.d(TAG,intent.getExtras().getString("post"));
 
           update_posts();
 
@@ -257,8 +257,8 @@ public class Feed extends AppCompatActivity implements AdapterView.OnItemClickLi
 
         Intent intent= new Intent(this,Chat.class);
 
-        //TextView contact = (TextView) view.findViewById(R.id.contact);
-        //mIntent.putExtra("contact_name", contact.getText().toString());
+        //TextView post = (TextView) view.findViewById(R.id.post);
+        //mIntent.putExtra("contact_name", post.getText().toString());
 
         intent.putExtra("contact_username", post_list.get(position).text);
         intent.putExtra("contact_name", post_list.get(position).text);

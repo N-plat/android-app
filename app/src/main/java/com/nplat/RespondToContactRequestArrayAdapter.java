@@ -150,7 +150,7 @@ public class RespondToContactRequestArrayAdapter extends ArrayAdapter<RespondToC
 
 
     public RespondToContactRequestArrayAdapter(Context context, List<RespondToContactRequestsActivity.RespondToContactRequest> respondtocontactrequest_list) {
-        super(context, R.layout.contact, respondtocontactrequest_list);
+        super(context, R.layout.post, respondtocontactrequest_list);
         this.context = context;
         this.respondtocontactrequest_list = respondtocontactrequest_list;
     }

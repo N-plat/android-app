@@ -77,7 +77,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if (intent.getStringExtra("contact").equals(contact_username)) {
+            if (intent.getStringExtra("post").equals(contact_username)) {
 /*
                 user.getToken(false)
                         .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -102,7 +102,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
             }
             else
-                Toast.makeText(context, intent.getStringExtra("contact")+": "+intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, intent.getStringExtra("post")+": "+intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -146,7 +146,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
                 JSONObject json = new JSONObject();
 
-                json.put("contact",contact_username);
+                json.put("post",contact_username);
                 json.put("id_token",id_token);
 
                 writer.write(json.toString());
@@ -304,7 +304,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
                 JSONObject json = new JSONObject();
 
                 json.put("id_token",id_token);
-                json.put("contact",contact_username);
+                json.put("post",contact_username);
                 json.put("message",message);
 
                 writer.write(json.toString());
