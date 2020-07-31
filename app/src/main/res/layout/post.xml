@@ -26,4 +26,13 @@
         android:text=""
         android:textSize="10sp" />
 
+    <TextView
+        android:id="@+id/timestamp"
+        android:layout_width="97dp"
+        android:layout_height="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text=""
+        android:textSize="10sp" />
+
 </RelativeLayout>

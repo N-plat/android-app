@@ -32,15 +32,18 @@ public class PostActivityPostArrayAdapter extends ArrayAdapter<PostActivity.Post
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        TextView contact_textview;
-        TextView contact_usernameview;
+        TextView post_textview;
+        TextView post_usernameview;
+        TextView post_timestampview;
 
         contact_view = inflater.inflate(R.layout.post, parent, false);
-        contact_textview = (TextView) contact_view.findViewById(R.id.text);
-        contact_usernameview = (TextView) contact_view.findViewById(R.id.username);
+        post_textview = (TextView) contact_view.findViewById(R.id.text);
+        post_usernameview = (TextView) contact_view.findViewById(R.id.username);
+        post_timestampview = (TextView) contact_view.findViewById(R.id.timestamp);
 
-        contact_textview.setText(post_list.get(position).text);
-        contact_usernameview.setText(post_list.get(position).username);
+        post_textview.setText(post_list.get(position).text);
+        post_usernameview.setText(post_list.get(position).username);
+        post_timestampview.setText(post_list.get(position).timestamp);
 
 
         return contact_view;

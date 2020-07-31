@@ -32,13 +32,16 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
 
         TextView text_textview;
         TextView username_textview;
+        TextView timestamp_textview;
 
         post_view = inflater.inflate(R.layout.post, parent, false);
         text_textview = (TextView) post_view.findViewById(R.id.text);
         username_textview = (TextView) post_view.findViewById(R.id.username);
+        timestamp_textview = (TextView) post_view.findViewById(R.id.timestamp);
 
         text_textview.setText(post_list.get(position).text);
         username_textview.setText(post_list.get(position).username);
+        timestamp_textview.setText(post_list.get(position).timestamp);
 
         return post_view;
     }

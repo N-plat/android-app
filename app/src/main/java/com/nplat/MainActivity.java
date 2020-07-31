@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public class Post {
         String text;
         String username;
+        String timestamp;
     }
 
     List<MainActivity.Post> post_list = null;
