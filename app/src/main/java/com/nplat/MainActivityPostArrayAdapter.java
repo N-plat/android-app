@@ -48,7 +48,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
         text_textview.setText(post_list.get(position).text);
         username_textview.setText(post_list.get(position).username);
         timestamp_textview.setText(post_list.get(position).timestamp);
-        Glide.with(this.context).load("https://n-plat.com/image1.jpeg").into(image_imageview);
+        Glide.with(this.context).load("https://image.n-plat.com/image1.jpeg").into(image_imageview);
 //        image_imageview.setImageURI(Uri.parse("https://n-plat.com/image1.jpeg"));
 
         return post_view;

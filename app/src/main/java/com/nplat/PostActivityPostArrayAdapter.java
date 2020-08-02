@@ -48,7 +48,7 @@ public class PostActivityPostArrayAdapter extends ArrayAdapter<PostActivity.Post
         post_textview.setText(post_list.get(position).text);
         post_usernameview.setText(post_list.get(position).username);
         post_timestampview.setText(post_list.get(position).timestamp);
-        post_videoview.setVideoURI(Uri.parse("https://n-plat.com/video1.mp4"));
+        post_videoview.setVideoURI(Uri.parse("https://video.n-plat.com/video1.mp4"));
         post_videoview.start();
 
 
