@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -30,7 +33,7 @@ public class PostActivityPostArrayAdapter extends ArrayAdapter<PostActivity.Post
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View contact_view;
+        View post_view;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -38,21 +41,48 @@ public class PostActivityPostArrayAdapter extends ArrayAdapter<PostActivity.Post
         TextView post_usernameview;
         TextView post_timestampview;
         VideoView post_videoview;
+        ImageView post_imageview;
 
-        contact_view = inflater.inflate(R.layout.postwithvideo, parent, false);
-        post_textview = (TextView) contact_view.findViewById(R.id.text);
-        post_usernameview = (TextView) contact_view.findViewById(R.id.username);
-        post_timestampview = (TextView) contact_view.findViewById(R.id.timestamp);
-        post_videoview = (VideoView) contact_view.findViewById(R.id.video);
+        if (position % 3 == 0) {
 
-        post_textview.setText(post_list.get(position).text);
-        post_usernameview.setText(post_list.get(position).username);
-        post_timestampview.setText(post_list.get(position).timestamp);
-        post_videoview.setVideoURI(Uri.parse("https://video.n-plat.com/video1.mp4"));
-        post_videoview.start();
+            post_view = inflater.inflate(R.layout.postwithvideo, parent, false);
+            post_textview = (TextView) post_view.findViewById(R.id.text);
+            post_usernameview = (TextView) post_view.findViewById(R.id.username);
+            post_timestampview = (TextView) post_view.findViewById(R.id.timestamp);
+            post_videoview = (VideoView) post_view.findViewById(R.id.video);
 
+            post_textview.setText(post_list.get(position).text);
+            post_usernameview.setText(post_list.get(position).username);
+            post_timestampview.setText(post_list.get(position).timestamp);
+            post_videoview.setVideoURI(Uri.parse("https://video.n-plat.com/video1.mp4"));
+            post_videoview.start();
 
-        return contact_view;
+        } else if (position % 3 == 1) {
+
+            post_view = inflater.inflate(R.layout.postwithimage, parent, false);
+            post_textview = (TextView) post_view.findViewById(R.id.text);
+            post_usernameview = (TextView) post_view.findViewById(R.id.username);
+            post_timestampview = (TextView) post_view.findViewById(R.id.timestamp);
+            post_imageview = (ImageView) post_view.findViewById(R.id.image);
+
+            post_textview.setText(post_list.get(position).text);
+            post_usernameview.setText(post_list.get(position).username);
+            post_timestampview.setText(post_list.get(position).timestamp);
+            Glide.with(this.context).load("https://image.n-plat.com/image1.jpeg").into(post_imageview);
+
+        } else {
+
+            post_view = inflater.inflate(R.layout.post, parent, false);
+            post_textview = (TextView) post_view.findViewById(R.id.text);
+            post_usernameview = (TextView) post_view.findViewById(R.id.username);
+            post_timestampview = (TextView) post_view.findViewById(R.id.timestamp);
+
+            post_textview.setText(post_list.get(position).text);
+            post_usernameview.setText(post_list.get(position).username);
+            post_timestampview.setText(post_list.get(position).timestamp);
+        }
+
+        return post_view;
     }
 
 }
