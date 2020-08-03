@@ -1,27 +1,40 @@
 package com.nplat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,14 +48,20 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -51,6 +70,13 @@ import javax.net.ssl.HttpsURLConnection;
  */
 
 public class PostActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+
+
+    private final static int REQUEST_PICTURE = 0;
+    private final static int PERMISSIONS_REQUEST_READ_MEDIA = 10;
+    private final static int PERMISSIONS_REQUEST_LOCATION = 11;
+
+    private String photoPath;
 
     private String id_token;
 
@@ -73,6 +99,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
     Context context;
 
     ProgressDialog progress_dialog;
+
+
 
     void update_posts() {
 
@@ -242,19 +270,101 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     };
 
+    private File getFile() {
+        File photoFile = null;
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            photoFile = File.createTempFile(imageFileName, ".jpg", storageDir);
+            photoPath = photoFile.getAbsolutePath();
+        } catch (IOException ex) {
+//            Snackbar.make(viewPager, R.string.main_error_dispatch_camera, Snackbar.LENGTH_SHORT).show();
+        }
+        return photoFile;
+    }
+
+    private List<Intent> addIntentsToList(List<Intent> list, Intent intent) {
+        List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(intent, 0);
+        for (ResolveInfo resolveInfo : resInfo) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            Intent targetedIntent = new Intent(intent);
+            targetedIntent.setPackage(packageName);
+            list.add(targetedIntent);
+        }
+        return list;
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result = null;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            if (contentURI.toString().contains("mediaKey")) {
+                cursor.close();
+
+                try {
+                    File file = File.createTempFile("tempImg", ".jpg", getCacheDir());
+                    InputStream input = getContentResolver().openInputStream(contentURI);
+                    OutputStream output = new FileOutputStream(file);
+
+                    try {
+                        byte[] buffer = new byte[4 * 1024];
+                        int read;
+
+                        while ((read = input.read(buffer)) != -1) {
+                            output.write(buffer, 0, read);
+                        }
+                        output.flush();
+                        result = file.getAbsolutePath();
+                    } finally {
+                        output.close();
+                        input.close();
+                    }
+
+                } catch (Exception e) {
+                    Log.e(MainActivity.class.getSimpleName(), "Error getting file path", e);
+                }
+            } else {
+                cursor.moveToFirst();
+                int dataColumn = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                result = cursor.getString(dataColumn);
+                cursor.close();
+            }
+
+        }
+        return result;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_PICTURE) {
+            boolean isCamera = (data == null ||
+                    data.getData() == null);
+
+            ImageView imageview = (ImageView) findViewById(R.id.image);
+            imageview.setImageURI(data.getData());
+
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contacts);
+        setContentView(R.layout.activity_post);
 
         context = this;
+
+        final Activity activity = this;
 
         contact_array_adapter = new PostActivityPostArrayAdapter(this, post_list);
 
         contact_listview = (ListView) findViewById(R.id.contactListView);
 
         Button postbutton = (Button) findViewById(R.id.postbutton);
+        Button takephotobutton = (Button) findViewById(R.id.takephotobutton);
 
         postbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,6 +388,70 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                                 String messageString = editMessage.getText().toString();
 
                                 new AsyncTask1().execute(messageString);
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
+
+        takephotobutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (false && permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_MEDIA);
+                } else {
+                    Intent chooserIntent = null;
+
+                    List<Intent> intentList = new ArrayList<>();
+
+                    Intent pickIntent = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    takePhotoIntent.putExtra("return-data", true);
+                    File photoFile = getFile();
+
+                    if (photoFile != null) {
+                        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                        if (takePhotoIntent.resolveActivity(getPackageManager()) != null) {
+                            intentList = addIntentsToList(intentList, takePhotoIntent);
+                        }
+                    }
+
+                    if (pickIntent.resolveActivity(getPackageManager()) != null) {
+                        intentList = addIntentsToList(intentList, pickIntent);
+                    }
+
+                    if (intentList.size() > 0) {
+                        chooserIntent = Intent.createChooser(intentList.remove(intentList.size() - 1),
+                                "main_message_picture_source");
+                        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentList.toArray(new Parcelable[]{}));
+                    }
+
+                    startActivityForResult(chooserIntent, REQUEST_PICTURE);
+                }
+
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                FirebaseUser user = auth.getCurrentUser();
+
+                if (user != null) {
+
+                    user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                            if (task.isSuccessful()) {
+
+                                id_token = task.getResult().getToken();
+
+                                EditText editMessage = (EditText) findViewById(R.id.postText);
+
+                                String messageString = editMessage.getText().toString();
+
+//                                new AsyncTask1().execute(messageString);
                             }
                         }
                     });
