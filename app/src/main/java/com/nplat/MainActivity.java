@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         String text;
         String username;
         String timestamp;
+        int videoid;
+        int imageid;
     }
 
     List<MainActivity.Post> post_list = null;

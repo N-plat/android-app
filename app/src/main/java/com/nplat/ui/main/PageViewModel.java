@@ -45,6 +45,8 @@ public class PageViewModel extends ViewModel {
         public String text;
         public String username;
         public String timestamp;
+        public int videoid;
+        public int imageid;
     }
 
     public class Username {

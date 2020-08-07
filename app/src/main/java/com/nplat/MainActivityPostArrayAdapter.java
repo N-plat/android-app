@@ -2,6 +2,7 @@ package com.nplat;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Post> {
 
-    private static final String TAG = "MainActivityPostArrayAdapter";
+    private static final String TAG = "MainActivity";
 
     private final Context context;
     private final List<PageViewModel.Post> post_list;
@@ -41,7 +42,10 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
         VideoView post_videoview;
         ImageView post_imageview;
 
-        if (position % 3 == 0) {
+        Log.d(TAG, String.valueOf(post_list.get(position).videoid));
+        Log.d(TAG, String.valueOf(post_list.get(position).imageid));
+
+        if (post_list.get(position).videoid != 0) {
 
             post_view = inflater.inflate(R.layout.postwithvideo, parent, false);
             post_textview = (TextView) post_view.findViewById(R.id.text);
@@ -52,10 +56,10 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
             post_textview.setText(post_list.get(position).text);
             post_usernameview.setText(post_list.get(position).username);
             post_timestampview.setText(post_list.get(position).timestamp);
-            post_videoview.setVideoURI(Uri.parse("https://video.n-plat.com/video1.mp4"));
+            post_videoview.setVideoURI(Uri.parse("https://n-plat.com/stream/?filename=video"+post_list.get(position).videoid+".mp4"));
             post_videoview.start();
 
-        } else if (position % 3 == 1) {
+        } else if (post_list.get(position).imageid != 0) {
 
             post_view = inflater.inflate(R.layout.postwithimage, parent, false);
             post_textview = (TextView) post_view.findViewById(R.id.text);
@@ -66,7 +70,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
             post_textview.setText(post_list.get(position).text);
             post_usernameview.setText(post_list.get(position).username);
             post_timestampview.setText(post_list.get(position).timestamp);
-            Glide.with(this.context).load("https://image.n-plat.com/image1.jpeg").into(post_imageview);
+            Glide.with(this.context).load("https://n-plat.com/images/?filename=image"+post_list.get(position).imageid+".jpeg").into(post_imageview);
 
         } else {
 

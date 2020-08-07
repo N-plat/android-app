@@ -92,6 +92,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         String text;
         String username;
         String timestamp;
+        int videoid;
+        int imageid;
     }
 
     List<Post> post_list = null;
