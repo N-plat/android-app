@@ -5,10 +5,10 @@ android {
     buildToolsVersion '29.0.2'
     defaultConfig {
         applicationId "com.nplat"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
-        versionCode 47
-        versionName "1.2.25"
+        versionCode 48
+        versionName "1.2.26"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -33,6 +33,7 @@ dependencies {
     api 'com.google.firebase:firebase-messaging:10.2.1'
     api 'com.google.firebase:firebase-auth:19.3.2'
     api 'com.google.code.gson:gson:2.7'
+    api 'com.squareup.okhttp3:okhttp:4.8.1'
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.bumptech.glide:glide:4.11.0'

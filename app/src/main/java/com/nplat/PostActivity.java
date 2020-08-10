@@ -10,9 +10,20 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -21,6 +32,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -49,6 +61,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,12 +71,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -85,6 +102,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
     private static final String TAG="Contacts";
 
     ListView contact_listview;
+
+    private final OkHttpClient client = new OkHttpClient();
 
     PostActivityPostArrayAdapter contact_array_adapter;
 
@@ -271,15 +290,17 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
         }
     };
+    File photoFile = null;
 
     private File getFile() {
-        File photoFile = null;
+
         try {
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
             String imageFileName = "JPEG_" + timeStamp + "_";
             File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             photoFile = File.createTempFile(imageFileName, ".jpg", storageDir);
             photoPath = photoFile.getAbsolutePath();
+            Log.d(TAG, photoPath);
         } catch (IOException ex) {
 //            Snackbar.make(viewPager, R.string.main_error_dispatch_camera, Snackbar.LENGTH_SHORT).show();
         }
@@ -339,6 +360,10 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         return result;
     }
 
+    Uri image_data = null;
+    String image_path;
+    String image_string;
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_PICTURE) {
             boolean isCamera = (data == null ||
@@ -346,7 +371,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
             ImageView imageview = (ImageView) findViewById(R.id.image);
             imageview.setImageURI(data.getData());
-
+            image_data = data.getData();
+            image_path = getRealPathFromURI(image_data);
 
         }
     }
@@ -403,7 +429,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View view) {
 
                 int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                if (false && permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_MEDIA);
                 } else {
                     Intent chooserIntent = null;
@@ -479,6 +505,32 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+                getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
+    }
+
+    private String readTextFromUri(Uri uri) throws IOException {
+        String line = "";
+        String result = "";
+        try (InputStream inputStream =
+                     getContentResolver().openInputStream(uri);
+             BufferedReader reader = new BufferedReader(
+                     new InputStreamReader(Objects.requireNonNull(inputStream)))) {
+            while((line = reader.readLine()) != null){
+                result += line;
+            }
+            if(null!=inputStream){
+                inputStream.close();
+            }
+            return result;
+        }
+    }
+
     private String convertInputStreamToString(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
         String line = "";
@@ -493,6 +545,56 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         return result;
     }
 
+    private String convertFileInputStreamToString(FileInputStream fileInputStream) throws IOException {
+//        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(fileInputStream));
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(fileInputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null){
+            result += line;
+        }
+
+        if(null!=fileInputStream){
+            fileInputStream.close();
+        }
+        return result;
+    }
+
+    private String convertFileInputStreamToByteArray(FileInputStream fileInputStream) throws IOException {
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+        int character;
+
+        Log.d(TAG, "andy debug 0");
+
+        char [] bytearray = new char[93297];
+        int nbyte = 0;
+
+        while( (character = bufferedInputStream.read()) != -1 ){
+            bytearray[nbyte] = (char) character;
+            Log.d(TAG, String.valueOf(character));
+            Log.d(TAG, String.valueOf(bytearray[nbyte]));
+
+//            bytearray[nbyte] = (byte) 128;
+            nbyte++;
+        }
+
+        if(null!=fileInputStream){
+            fileInputStream.close();
+        }
+
+        String result = new String (bytearray);
+
+        Log.d(TAG, "andy debug 0");
+        Log.d(TAG, String.valueOf(bytearray.length));
+        Log.d(TAG, "andy debug 1");
+        Log.d(TAG, String.valueOf(result.getBytes().length));
+        Log.d(TAG, "andy debug 2");
+        Log.d(TAG, String.valueOf(result.length()));
+        Log.d(TAG, "andy debug 3");
+
+        return result;
+    }
+
     public class AsyncTask1 extends AsyncTask<String, Void, String> {
 
         private JSONObject response_json_object = null;
@@ -502,6 +604,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
             //doing just progress_dialog.show(...) leads to null pointer exceptions when progress_dialog.dismiss is called later
             progress_dialog = ProgressDialog.show(context, "","Posting");
+
+
 
         }
 
@@ -538,79 +642,35 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         protected String doInBackground(String... message) {
             InputStream inputStream = null;
             HttpsURLConnection urlConnection = null;
-            String response = "";
 
             try {
 
                 URL url = new URL("https://android.n-plat.com:443/post/");
 
-                urlConnection = (HttpsURLConnection) url.openConnection();
 
-                urlConnection.setRequestProperty("Content-Type", "application/json");
+                String IMGUR_CLIENT_ID = "...";
+                MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
-                urlConnection.setRequestProperty("Accept", "application/json");
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("imageFile", "catimage.jpeg",
+                                RequestBody.create(MEDIA_TYPE_PNG, new File(image_path)))
+                        .build();
 
-                urlConnection.setDoInput(true);
+                Request request = new Request.Builder()
+//                        .header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
+//                        .url("https://android.n-plat.com:443/post/")
+                        .url("https://android.n-plat.com:443/post/")
+                        .post(requestBody)
+                        .build();
 
-                urlConnection.setDoOutput(true);
+                try (Response response = client.newCall(request).execute()) {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-                OutputStream os = urlConnection.getOutputStream();
-
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-
-                JSONObject request_json_object = new JSONObject();
-
-                request_json_object.put("message",message[0]);
-                request_json_object.put("id_token",id_token);
-
-                writer.write(request_json_object.toString());
-
-                writer.flush();
-
-                writer.close();
-
-                os.close();
-
-                urlConnection.setRequestMethod("POST");
-
-                urlConnection.connect();
-
-                int statusCode = urlConnection.getResponseCode();
-
-                if (statusCode == 200) {
-                    String line;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    while ((line=br.readLine()) != null) {
-                        response+=line;
-                    }
-
-                    try {
-
-                        response_json_object = new JSONObject(response);
-
-                    } catch (JSONException e) {
-
-                        if (e.getMessage() != null) {
-                            Log.d(TAG, e.getMessage());
-                        }
-
-                        if (e.getLocalizedMessage() != null) {
-                            Log.d(TAG, e.getLocalizedMessage());
-                        }
-
-                        if (e.getCause() != null) {
-                            Log.d(TAG, e.getCause().toString());
-                        }
-
-                        e.printStackTrace();
-                    }
-
-                } else {
-
-
-
+                    System.out.println(response.body().string());
                 }
+
+
             }
             catch (Exception e) {
 
