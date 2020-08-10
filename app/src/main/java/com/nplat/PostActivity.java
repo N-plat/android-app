@@ -560,40 +560,6 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         return result;
     }
 
-    private String convertFileInputStreamToByteArray(FileInputStream fileInputStream) throws IOException {
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-        int character;
-
-        Log.d(TAG, "andy debug 0");
-
-        char [] bytearray = new char[93297];
-        int nbyte = 0;
-
-        while( (character = bufferedInputStream.read()) != -1 ){
-            bytearray[nbyte] = (char) character;
-            Log.d(TAG, String.valueOf(character));
-            Log.d(TAG, String.valueOf(bytearray[nbyte]));
-
-//            bytearray[nbyte] = (byte) 128;
-            nbyte++;
-        }
-
-        if(null!=fileInputStream){
-            fileInputStream.close();
-        }
-
-        String result = new String (bytearray);
-
-        Log.d(TAG, "andy debug 0");
-        Log.d(TAG, String.valueOf(bytearray.length));
-        Log.d(TAG, "andy debug 1");
-        Log.d(TAG, String.valueOf(result.getBytes().length));
-        Log.d(TAG, "andy debug 2");
-        Log.d(TAG, String.valueOf(result.length()));
-        Log.d(TAG, "andy debug 3");
-
-        return result;
-    }
 
     public class AsyncTask1 extends AsyncTask<String, Void, String> {
 
