@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -43,6 +44,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.VideoView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -70,6 +72,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -79,6 +82,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -90,10 +94,12 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     private final static int REQUEST_PICTURE = 0;
+    private final static int REQUEST_VIDEO = 1;
     private final static int PERMISSIONS_REQUEST_READ_MEDIA = 10;
     private final static int PERMISSIONS_REQUEST_LOCATION = 11;
 
     private String photoPath;
+    private String videoPath;
 
     private String id_token;
 
@@ -103,7 +109,11 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
     ListView contact_listview;
 
-    private final OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(600,TimeUnit.SECONDS)
+            .writeTimeout(600,TimeUnit.SECONDS)
+            .readTimeout(600,TimeUnit.SECONDS)
+            .build();
 
     PostActivityPostArrayAdapter contact_array_adapter;
 
@@ -291,8 +301,9 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     };
     File photoFile = null;
+    File videoFile = null;
 
-    private File getFile() {
+    private File getImageFile() {
 
         try {
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
@@ -307,6 +318,21 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         return photoFile;
     }
 
+    private File getVideoFile() {
+
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+            videoFile = File.createTempFile(imageFileName, ".mp4", storageDir);
+            videoPath = videoFile.getAbsolutePath();
+            Log.d(TAG, videoPath);
+        } catch (IOException ex) {
+//            Snackbar.make(viewPager, R.string.main_error_dispatch_camera, Snackbar.LENGTH_SHORT).show();
+        }
+        return videoFile;
+    }
+
     private List<Intent> addIntentsToList(List<Intent> list, Intent intent) {
         List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(intent, 0);
         for (ResolveInfo resolveInfo : resInfo) {
@@ -318,8 +344,9 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         return list;
     }
 
-    private String getRealPathFromURI(Uri contentURI) {
+    private String getRealPathFromImageURI(Uri contentURI) {
         String result = null;
+
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
         if (cursor == null) {
             result = contentURI.getPath();
@@ -360,9 +387,55 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         return result;
     }
 
+    private String getRealPathFromVideoURI(Uri contentURI) {
+        String result = null;
+
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            if (contentURI.toString().contains("mediaKey")) {
+                cursor.close();
+
+                try {
+                    File file = File.createTempFile("tempImg", ".jpg", getCacheDir());
+                    InputStream input = getContentResolver().openInputStream(contentURI);
+                    OutputStream output = new FileOutputStream(file);
+
+                    try {
+                        byte[] buffer = new byte[4 * 1024];
+                        int read;
+
+                        while ((read = input.read(buffer)) != -1) {
+                            output.write(buffer, 0, read);
+                        }
+                        output.flush();
+                        result = file.getAbsolutePath();
+                    } finally {
+                        output.close();
+                        input.close();
+                    }
+
+                } catch (Exception e) {
+                    Log.e(MainActivity.class.getSimpleName(), "Error getting file path", e);
+                }
+            } else {
+                cursor.moveToFirst();
+                int dataColumn = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA);
+                result = cursor.getString(dataColumn);
+                cursor.close();
+            }
+
+        }
+        return result;
+    }
+
+    Uri video_data = null;
     Uri image_data = null;
     String image_path;
     String image_string;
+    String video_path;
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_PICTURE) {
@@ -372,9 +445,21 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
             ImageView imageview = (ImageView) findViewById(R.id.image);
             imageview.setImageURI(data.getData());
             image_data = data.getData();
-            image_path = getRealPathFromURI(image_data);
+            image_path = getRealPathFromImageURI(image_data);
 
         }
+
+        if (resultCode == RESULT_OK && requestCode == REQUEST_VIDEO) {
+            boolean isCamera = (data == null ||
+                    data.getData() == null);
+
+            VideoView videoview = (VideoView) findViewById(R.id.video);
+            videoview.setVideoURI(data.getData());
+            video_data = data.getData();
+            video_path = getRealPathFromVideoURI(video_data);
+
+        }
+
     }
 
     @Override
@@ -393,6 +478,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
         Button postbutton = (Button) findViewById(R.id.postbutton);
         Button takephotobutton = (Button) findViewById(R.id.takephotobutton);
+        Button takevideobutton = (Button) findViewById(R.id.takevideobutton);
 
         postbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -440,7 +526,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     takePhotoIntent.putExtra("return-data", true);
-                    File photoFile = getFile();
+                    File photoFile = getImageFile();
 
                     if (photoFile != null) {
                         takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
@@ -460,6 +546,70 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
 
                     startActivityForResult(chooserIntent, REQUEST_PICTURE);
+                }
+
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                FirebaseUser user = auth.getCurrentUser();
+
+                if (user != null) {
+
+                    user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                            if (task.isSuccessful()) {
+
+                                id_token = task.getResult().getToken();
+
+                                EditText editMessage = (EditText) findViewById(R.id.postText);
+
+                                String messageString = editMessage.getText().toString();
+
+//                                new AsyncTask1().execute(messageString);
+                            }
+                        }
+                    });
+                }
+            }
+
+        });
+
+        takevideobutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_MEDIA);
+                } else {
+                    Intent chooserIntent = null;
+
+                    List<Intent> intentList = new ArrayList<>();
+
+                    Intent pickIntent = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                    Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                    takeVideoIntent.putExtra("return-data", true);
+//                    File videoFile = getVideoFile();
+
+                    if (videoFile != null) {
+                        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(videoFile));
+                        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+                            intentList = addIntentsToList(intentList, takeVideoIntent);
+                        }
+                    }
+
+                    if (pickIntent.resolveActivity(getPackageManager()) != null) {
+                        intentList = addIntentsToList(intentList, pickIntent);
+                    }
+
+                    if (intentList.size() > 0) {
+                        chooserIntent = Intent.createChooser(intentList.remove(intentList.size() - 1),
+                                "main_message_video_source");
+                        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentList.toArray(new Parcelable[]{}));
+                    }
+
+                    startActivityForResult(chooserIntent, REQUEST_VIDEO);
                 }
 
                 FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -614,13 +764,22 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                 URL url = new URL("https://android.n-plat.com:443/post/");
 
 
+//                String IMGUR_CLIENT_ID = "...";
+//                MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+
                 String IMGUR_CLIENT_ID = "...";
-                MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+                MediaType MEDIA_TYPE_MP4 = MediaType.parse("video/mp4");
+
+//                RequestBody requestBody = new MultipartBody.Builder()
+//                        .setType(MultipartBody.FORM)
+//                        .addFormDataPart("imageFile", "catimage.jpeg",
+//                                RequestBody.create(MEDIA_TYPE_PNG, new File(image_path)))
+//                        .build();
 
                 RequestBody requestBody = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
-                        .addFormDataPart("imageFile", "catimage.jpeg",
-                                RequestBody.create(MEDIA_TYPE_PNG, new File(image_path)))
+                        .addFormDataPart("videoFile", "catvideo.mp4",
+                                RequestBody.create(MEDIA_TYPE_MP4, new File(video_path)))
                         .build();
 
                 Request request = new Request.Builder()
