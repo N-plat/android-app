@@ -436,6 +436,9 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
     String image_path;
     String image_string;
     String video_path;
+    boolean ispostwithimage = false;
+    boolean ispostwithvideo = false;
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_PICTURE) {
@@ -444,6 +447,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
             ImageView imageview = (ImageView) findViewById(R.id.image);
             imageview.setImageURI(data.getData());
+            ispostwithimage = true;
+            ispostwithvideo = false;
             image_data = data.getData();
             image_path = getRealPathFromImageURI(image_data);
 
@@ -455,6 +460,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
             VideoView videoview = (VideoView) findViewById(R.id.video);
             videoview.setVideoURI(data.getData());
+            ispostwithvideo = true;
+            ispostwithimage = false;
             video_data = data.getData();
             video_path = getRealPathFromVideoURI(video_data);
 
@@ -759,42 +766,123 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
             InputStream inputStream = null;
             HttpsURLConnection urlConnection = null;
 
+
             try {
 
-                URL url = new URL("https://android.n-plat.com:443/post/");
+                if (ispostwithvideo) {
 
+                    MediaType MEDIA_TYPE_MP4 = MediaType.parse("video/mp4");
 
-//                String IMGUR_CLIENT_ID = "...";
-//                MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+                    RequestBody requestBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("videoFile", "catvideo.mp4",
+                                    RequestBody.create(MEDIA_TYPE_MP4, new File(video_path)))
+                            .build();
 
-                String IMGUR_CLIENT_ID = "...";
-                MediaType MEDIA_TYPE_MP4 = MediaType.parse("video/mp4");
+                    Request request = new Request.Builder()
+                            .url("https://android.n-plat.com:443/postwithvideo/")
+                            .post(requestBody)
+                            .build();
 
-//                RequestBody requestBody = new MultipartBody.Builder()
-//                        .setType(MultipartBody.FORM)
-//                        .addFormDataPart("imageFile", "catimage.jpeg",
-//                                RequestBody.create(MEDIA_TYPE_PNG, new File(image_path)))
-//                        .build();
+                    try (Response response = client.newCall(request).execute()) {
+                        if (!response.isSuccessful())
+                            throw new IOException("Unexpected code " + response);
 
-                RequestBody requestBody = new MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart("videoFile", "catvideo.mp4",
-                                RequestBody.create(MEDIA_TYPE_MP4, new File(video_path)))
-                        .build();
+                        System.out.println(response.body().string());
+                    }
 
-                Request request = new Request.Builder()
-//                        .header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-//                        .url("https://android.n-plat.com:443/post/")
-                        .url("https://android.n-plat.com:443/post/")
-                        .post(requestBody)
-                        .build();
+                } else if (ispostwithimage) {
 
-                try (Response response = client.newCall(request).execute()) {
-                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                    MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
 
-                    System.out.println(response.body().string());
+                    RequestBody requestBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("imageFile", "catimage.jpeg",
+                                    RequestBody.create(MEDIA_TYPE_JPEG, new File(image_path)))
+                            .build();
+
+                    Request request = new Request.Builder()
+                            .url("https://android.n-plat.com:443/postwithimage/")
+                            .post(requestBody)
+                            .build();
+
+                    try (Response response = client.newCall(request).execute()) {
+                        if (!response.isSuccessful())
+                            throw new IOException("Unexpected code " + response);
+
+                        System.out.println(response.body().string());
+                    }
+                } else {
+
+                    String response = "";
+
+                    URL url = new URL("https://android.n-plat.com:443/post/");
+
+                    urlConnection = (HttpsURLConnection) url.openConnection();
+
+                    urlConnection.setRequestProperty("Content-Type", "application/json");
+
+                    urlConnection.setRequestProperty("Accept", "application/json");
+
+                    urlConnection.setDoInput(true);
+
+                    urlConnection.setDoOutput(true);
+
+                    OutputStream os = urlConnection.getOutputStream();
+
+                    BufferedWriter writer = new BufferedWriter(
+                            new OutputStreamWriter(os, "UTF-8"));
+
+                    JSONObject request_json_object = new JSONObject();
+
+                    request_json_object.put("message", message[0]);
+                    request_json_object.put("id_token", id_token);
+
+                    writer.write(request_json_object.toString());
+
+                    writer.flush();
+
+                    writer.close();
+
+                    os.close();
+
+                    urlConnection.setRequestMethod("POST");
+
+                    urlConnection.connect();
+
+                    int statusCode = urlConnection.getResponseCode();
+
+                    if (statusCode == 200) {
+                            String line;
+                            BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                            while ((line = br.readLine()) != null) {
+                                response += line;
+                            }
+
+                            try {
+
+                                response_json_object = new JSONObject(response);
+
+                            } catch (JSONException e) {
+
+                                if (e.getMessage() != null) {
+                                    Log.d(TAG, e.getMessage());
+                                }
+
+                                if (e.getLocalizedMessage() != null) {
+                                    Log.d(TAG, e.getLocalizedMessage());
+                                }
+
+                                if (e.getCause() != null) {
+                                    Log.d(TAG, e.getCause().toString());
+                                }
+
+                                e.printStackTrace();
+                            }
+
+                    }
+
                 }
-
 
             }
             catch (Exception e) {
