@@ -789,8 +789,32 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                     try (Response response = client.newCall(request).execute()) {
                         if (!response.isSuccessful())
                             throw new IOException("Unexpected code " + response);
+                        else {
+                            try {
 
-                        System.out.println(response.body().string());
+//                                System.out.println(response.body().string());
+
+                                response_json_object = new JSONObject(response.body().string());
+
+                            } catch (JSONException e) {
+
+                                if (e.getMessage() != null) {
+                                    Log.d(TAG, e.getMessage());
+                                }
+
+                                if (e.getLocalizedMessage() != null) {
+                                    Log.d(TAG, e.getLocalizedMessage());
+                                }
+
+                                if (e.getCause() != null) {
+                                    Log.d(TAG, e.getCause().toString());
+                                }
+
+                                e.printStackTrace();
+                            }
+
+                        }
+
                     }
 
                 } else if (ispostwithimage) {
@@ -813,8 +837,32 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
                     try (Response response = client.newCall(request).execute()) {
                         if (!response.isSuccessful())
                             throw new IOException("Unexpected code " + response);
+                        else {
+                            try {
 
-                        System.out.println(response.body().string());
+//                                System.out.println(response.body().string());
+
+                                response_json_object = new JSONObject(response.body().string());
+
+                            } catch (JSONException e) {
+
+                                if (e.getMessage() != null) {
+                                    Log.d(TAG, e.getMessage());
+                                }
+
+                                if (e.getLocalizedMessage() != null) {
+                                    Log.d(TAG, e.getLocalizedMessage());
+                                }
+
+                                if (e.getCause() != null) {
+                                    Log.d(TAG, e.getCause().toString());
+                                }
+
+                                e.printStackTrace();
+                            }
+
+                        }
+
                     }
                 } else {
 
@@ -907,8 +955,6 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
             }
 
             if (response_json_object != null){
-
-
 
                 try {
                     if(response_json_object.getBoolean("success")){
