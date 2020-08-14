@@ -775,6 +775,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     RequestBody requestBody = new MultipartBody.Builder()
                             .setType(MultipartBody.FORM)
+                            .addFormDataPart("id_token", id_token)
+                            .addFormDataPart("message", message[0])
                             .addFormDataPart("videoFile", "catvideo.mp4",
                                     RequestBody.create(MEDIA_TYPE_MP4, new File(video_path)))
                             .build();
@@ -797,6 +799,8 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     RequestBody requestBody = new MultipartBody.Builder()
                             .setType(MultipartBody.FORM)
+                            .addFormDataPart("id_token", id_token)
+                            .addFormDataPart("message", message[0])
                             .addFormDataPart("imageFile", "catimage.jpeg",
                                     RequestBody.create(MEDIA_TYPE_JPEG, new File(image_path)))
                             .build();
