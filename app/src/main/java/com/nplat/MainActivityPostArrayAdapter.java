@@ -56,7 +56,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
             post_textview.setText(post_list.get(position).text);
             post_usernameview.setText(post_list.get(position).username);
             post_timestampview.setText(post_list.get(position).timestamp);
-            post_videoview.setVideoURI(Uri.parse("https://n-plat.com/stream/?filename=video"+post_list.get(position).videoid+".mp4"));
+            post_videoview.setVideoURI(Uri.parse("https://video.n-plat.com/stream/?filename=video"+post_list.get(position).videoid+".mp4"));
             post_videoview.start();
 
         } else if (post_list.get(position).imageid != 0) {
@@ -70,7 +70,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
             post_textview.setText(post_list.get(position).text);
             post_usernameview.setText(post_list.get(position).username);
             post_timestampview.setText(post_list.get(position).timestamp);
-            Glide.with(this.context).load("https://n-plat.com/images/?filename=image"+post_list.get(position).imageid+".jpeg").into(post_imageview);
+            Glide.with(this.context).load("https://image.n-plat.com/?filename=image"+post_list.get(position).imageid+".jpeg").into(post_imageview);
 
         } else {
 
