@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     tools:context="com.nplat.LoginActivity">
 
-    <include layout="@layout/content_contacts"
+    <include layout="@layout/content_posts"
         android:id="@+id/include" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

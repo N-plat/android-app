@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -16,14 +15,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import okhttp3.Headers;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 
 import androidx.annotation.NonNull;
@@ -48,7 +46,6 @@ import android.widget.VideoView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,16 +62,13 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.URI;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,6 +79,9 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 /**
  * Created by amlevin on 8/25/2017.
@@ -105,9 +102,9 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private FirebaseAuth mAuth;
 
-    private static final String TAG="Contacts";
+    private static final String TAG="Posts";
 
-    ListView contact_listview;
+    ListView post_listview;
 
     private final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(600,TimeUnit.SECONDS)
@@ -115,7 +112,7 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
             .readTimeout(600,TimeUnit.SECONDS)
             .build();
 
-    PostActivityPostArrayAdapter contact_array_adapter;
+    PostActivityPostArrayAdapter post_array_adapter;
 
     public class Post {
         String text;
@@ -253,9 +250,9 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            contact_array_adapter = new PostActivityPostArrayAdapter(context, post_list);
+            post_array_adapter = new PostActivityPostArrayAdapter(context, post_list);
 
-            contact_listview.setAdapter((ListAdapter) contact_array_adapter);
+            post_listview.setAdapter((ListAdapter) post_array_adapter);
 
             //progressDialog.dismiss();
         }
@@ -447,6 +444,10 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
             ImageView imageview = (ImageView) findViewById(R.id.image);
             imageview.setImageURI(data.getData());
+            VideoView videoview = (VideoView) findViewById(R.id.video);
+            videoview.setVisibility(INVISIBLE);
+            imageview.setVisibility(VISIBLE);
+            imageview.requestFocus();
             ispostwithimage = true;
             ispostwithvideo = false;
             image_data = data.getData();
@@ -460,6 +461,11 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
             VideoView videoview = (VideoView) findViewById(R.id.video);
             videoview.setVideoURI(data.getData());
+            ImageView imageview = (ImageView) findViewById(R.id.image);
+            imageview.setVisibility(INVISIBLE);
+            videoview.setVisibility(VISIBLE);
+            videoview.requestFocus();
+            videoview.start();
             ispostwithvideo = true;
             ispostwithimage = false;
             video_data = data.getData();
@@ -479,9 +485,14 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
 
         final Activity activity = this;
 
-        contact_array_adapter = new PostActivityPostArrayAdapter(this, post_list);
+        VideoView videoview = (VideoView) findViewById(R.id.video);
+        ImageView imageview = (ImageView) findViewById(R.id.image);
+        imageview.setVisibility(INVISIBLE);
+        videoview.setVisibility(INVISIBLE);
 
-        contact_listview = (ListView) findViewById(R.id.contactListView);
+        post_array_adapter = new PostActivityPostArrayAdapter(this, post_list);
+
+        post_listview = (ListView) findViewById(R.id.contactListView);
 
         Button postbutton = (Button) findViewById(R.id.postbutton);
         Button takephotobutton = (Button) findViewById(R.id.takephotobutton);
