@@ -255,14 +255,14 @@ public class Feed extends AppCompatActivity implements AdapterView.OnItemClickLi
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-        Intent intent= new Intent(this,Chat.class);
+//        Intent intent= new Intent(this,Chat.class);
 
         //TextView post = (TextView) view.findViewById(R.id.post);
         //mIntent.putExtra("contact_name", post.getText().toString());
 
-        intent.putExtra("contact_username", post_list.get(position).text);
-        intent.putExtra("contact_name", post_list.get(position).text);
-        startActivity(intent);
+ //       intent.putExtra("contact_username", post_list.get(position).text);
+ //       intent.putExtra("contact_name", post_list.get(position).text);
+ //       startActivity(intent);
 
     }
 

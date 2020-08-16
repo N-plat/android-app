@@ -662,42 +662,17 @@ public class PostActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-        Intent intent= new Intent(this,Chat.class);
+//        Intent intent= new Intent(this,Chat.class);
 
         //TextView post = (TextView) view.findViewById(R.id.post);
         //mIntent.putExtra("contact_name", post.getText().toString());
 
-        intent.putExtra("contact_username", post_list.get(position).text);
-        intent.putExtra("contact_name", post_list.get(position).text);
-        startActivity(intent);
+//        intent.putExtra("contact_username", post_list.get(position).text);
+//        intent.putExtra("contact_name", post_list.get(position).text);
+//        startActivity(intent);
 
     }
 
-    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor =
-                getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
-        return image;
-    }
-
-    private String readTextFromUri(Uri uri) throws IOException {
-        String line = "";
-        String result = "";
-        try (InputStream inputStream =
-                     getContentResolver().openInputStream(uri);
-             BufferedReader reader = new BufferedReader(
-                     new InputStreamReader(Objects.requireNonNull(inputStream)))) {
-            while((line = reader.readLine()) != null){
-                result += line;
-            }
-            if(null!=inputStream){
-                inputStream.close();
-            }
-            return result;
-        }
-    }
 
     private String convertInputStreamToString(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
