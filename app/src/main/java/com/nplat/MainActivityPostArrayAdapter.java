@@ -1,13 +1,17 @@
 package com.nplat;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -39,11 +43,8 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
         TextView post_textview;
         TextView post_usernameview;
         TextView post_timestampview;
-        VideoView post_videoview;
+        final VideoView post_videoview;
         ImageView post_imageview;
-
-        Log.d(TAG, String.valueOf(post_list.get(position).videoid));
-        Log.d(TAG, String.valueOf(post_list.get(position).imageid));
 
         if (post_list.get(position).videoid != 0) {
 
@@ -57,7 +58,21 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
             post_usernameview.setText(post_list.get(position).username);
             post_timestampview.setText(post_list.get(position).timestamp);
             post_videoview.setVideoURI(Uri.parse("https://video.n-plat.com/?filename=video"+post_list.get(position).videoid+".mp4"));
-            post_videoview.start();
+            post_videoview.setMediaController(new MediaController(post_videoview.getContext()));
+            post_videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.seekTo(0);
+                }
+            });
+
+//            post_videoview.setOnClickListener(new VideoView.OnClickListener() {
+//
+//                @Override
+//                public void onClick(View v) {
+//                    post_videoview.start();
+//                }
+//            });
 
         } else if (post_list.get(position).imageid != 0) {
 

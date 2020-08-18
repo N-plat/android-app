@@ -25,6 +25,7 @@
                                               <map>
                                                 <entry key="color" value="000000" />
                                                 <entry key="imagePath" value="C:\Users\andre\AppData\Local\Temp\ic_android_black_24dp.xml" />
+                                                <entry key="opacityPercent" value="60" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -80,6 +81,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -91,7 +93,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="scalingPercent" value="106" />
+                                                <entry key="scalingPercent" value="126" />
                                                 <entry key="text" value="N" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
@@ -105,7 +107,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="scalingPercent" value="106" />
+                                                <entry key="scalingPercent" value="126" />
                                                 <entry key="text" value="N" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
@@ -117,7 +119,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="foregroundAssetType" value="TEXT" />
+                                      <entry key="outputName" value="ic_launcher3" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -294,6 +298,11 @@
                 </map>
               </option>
             </PersistentState>
+          </value>
+        </entry>
+        <entry key="vectorWizard">
+          <value>
+            <PersistentState />
           </value>
         </entry>
       </map>

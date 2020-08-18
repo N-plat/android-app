@@ -2,27 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="160sp"
+    android:layout_height="450sp"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="15dp"
-    android:paddingRight="3dp"
+    android:paddingRight="15dp"
     android:paddingTop="3dp"
     android:paddingBottom="3dp">
 
     <VideoView
         android:id="@+id/video"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_width="fill_parent"
+        android:layout_height="313dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="2dp" />
+        android:layout_marginBottom="43dp"
+        android:scaleType="centerInside"/>
 
     <TextView
         android:id="@+id/text"
-        android:layout_width="409dp"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="97dp"
+        android:layout_marginBottom="376dp"
         android:text=""
         android:textSize="20sp" />
 
