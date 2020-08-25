@@ -245,7 +245,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 post_nreposts = (TextView) post_view.findViewById(R.id.nreposts);
 
                 post_textview.setText(post_list.get(position).parent_text);
-                post_usernameview.setText(post_list.get(position).parent_username + "(reposted by "+post_list.get(position).username+")");
+                post_usernameview.setText(post_list.get(position).parent_username + " (reposted by "+post_list.get(position).username+")");
                 post_timestampview.setText(post_list.get(position).parent_timestamp);
                 post_videoview.setVideoURI(Uri.parse("https://video.n-plat.com/?filename=video" + post_list.get(position).parent_videoid + ".mp4"));
                 post_videoview.setMediaController(new MediaController(post_videoview.getContext()));
@@ -317,7 +317,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 post_nreposts = (TextView) post_view.findViewById(R.id.nreposts);
 
                 post_textview.setText(post_list.get(position).parent_text);
-                post_usernameview.setText(post_list.get(position).parent_username + "(reposted by "+post_list.get(position).username+")");
+                post_usernameview.setText(post_list.get(position).parent_username + " (reposted by "+post_list.get(position).username+")");
                 post_timestampview.setText(post_list.get(position).parent_timestamp);
                 post_nloves.setText(post_list.get(position).nloves);
                 post_nreposts.setText(post_list.get(position).nreposts);
