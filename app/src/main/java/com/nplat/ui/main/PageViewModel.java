@@ -3,6 +3,9 @@ package com.nplat.ui.main;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.PopupMenu;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -11,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nplat.R;
 
 import org.json.JSONObject;
 
@@ -47,6 +51,15 @@ public class PageViewModel extends ViewModel {
         public String timestamp;
         public int videoid;
         public int imageid;
+        public int uniqueid;
+        public String parent_text;
+        public String parent_username;
+        public String parent_timestamp;
+        public int parent_videoid;
+        public int parent_imageid;
+        public int parent_uniqueid;
+        public String nloves;
+        public String nreposts;
     }
 
     public class Username {

@@ -7,8 +7,8 @@ android {
         applicationId "com.nplat"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 60
-        versionName "1.2.38"
+        versionCode 61
+        versionName "1.2.39"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {

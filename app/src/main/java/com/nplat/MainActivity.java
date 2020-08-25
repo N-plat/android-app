@@ -8,8 +8,11 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupMenu;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.nplat.ui.main.SectionsPagerAdapter;
@@ -30,6 +33,15 @@ public class MainActivity extends AppCompatActivity {
         String timestamp;
         int videoid;
         int imageid;
+        int uniqueid;
+        String parent_text;
+        String parent_username;
+        String parent_timestamp;
+        int parent_videoid;
+        int parent_imageid;
+        int parent_uniqueid;
+        int nloves;
+        int nreposts;
     }
 
     List<MainActivity.Post> post_list = null;
@@ -38,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
