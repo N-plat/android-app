@@ -5,15 +5,21 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.text.Html;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
+import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -170,10 +176,17 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 share_imageview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        PopupMenu popup = new PopupMenu(context, view);
-                        MenuInflater inflater = popup.getMenuInflater();
-                        inflater.inflate(R.menu.actions, popup.getMenu());
-                        popup.show();
+                        Context wrapper = new ContextThemeWrapper(context, R.style.PopupWindowTextView);
+                        PopupWindow popup = new PopupWindow(context);
+                        TextView textview = new TextView(wrapper);
+                        textview.setText(Html.fromHtml("<a href=\"http://n-plat.com/singlepost/?id=70\">http://n-plat.com/singlepost/?id=70</a>"));
+                        popup.setContentView(textview);
+//                        popup.update(100,100);
+                        popup.showAsDropDown(view);
+//                        PopupMenu popup = new PopupMenu(context, view);
+//                        MenuInflater inflater = popup.getMenuInflater();
+//                        inflater.inflate(R.menu.actions, popup.getMenu());
+ //                       popup.show();
                     }
 
                 });
