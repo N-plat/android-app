@@ -51,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
     }
 
+    public void onClickFunction (View v) {
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

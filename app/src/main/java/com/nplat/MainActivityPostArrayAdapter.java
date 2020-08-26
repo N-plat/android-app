@@ -1,16 +1,20 @@
 package com.nplat;
 
+
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -95,8 +99,11 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 post_nreposts = (TextView) post_view.findViewById(R.id.nreposts);
 
                 post_textview.setText(post_list.get(position).text);
+                post_textview.setTextIsSelectable(true);
                 post_usernameview.setText(post_list.get(position).username);
+                post_usernameview.setTextIsSelectable(true);
                 post_timestampview.setText(post_list.get(position).timestamp);
+                post_timestampview.setTextIsSelectable(true);
                 post_videoview.setVideoURI(Uri.parse("https://video.n-plat.com/?filename=video" + post_list.get(position).videoid + ".mp4"));
                 post_videoview.setMediaController(new MediaController(post_videoview.getContext()));
                 post_videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -106,7 +113,9 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                     }
                 });
                 post_nloves.setText(post_list.get(position).nloves);
+                post_nloves.setTextIsSelectable(true);
                 post_nreposts.setText(post_list.get(position).nreposts);
+                post_nreposts.setTextIsSelectable(true);
                 share_imageview = (ImageView) post_view.findViewById(R.id.share);
 
                 share_imageview.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +124,17 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                         PopupMenu popup = new PopupMenu(context, view);
                         MenuInflater inflater = popup.getMenuInflater();
                         inflater.inflate(R.menu.actions, popup.getMenu());
+                        popup.getMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override public boolean onMenuItemClick (MenuItem item){
+
+                                Uri webpage = Uri.parse(String.valueOf(item.getTitle()));
+                                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                                getContext().startActivity(intent);
+
+                                return true;
+                            };
+
+                        });
                         popup.show();
                     }
 
@@ -138,11 +158,16 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 post_nreposts = (TextView) post_view.findViewById(R.id.nreposts);
 
                 post_textview.setText(post_list.get(position).text);
+                post_textview.setTextIsSelectable(true);
                 post_usernameview.setText(post_list.get(position).username);
+                post_usernameview.setTextIsSelectable(true);
                 post_timestampview.setText(post_list.get(position).timestamp);
+                post_timestampview.setTextIsSelectable(true);
                 Glide.with(this.context).load("https://image.n-plat.com/?filename=image" + post_list.get(position).imageid + ".jpeg").into(post_imageview);
                 post_nloves.setText(post_list.get(position).nloves);
+                post_nloves.setTextIsSelectable(true);
                 post_nreposts.setText(post_list.get(position).nreposts);
+                post_nreposts.setTextIsSelectable(true);
                 share_imageview = (ImageView) post_view.findViewById(R.id.share);
 
                 share_imageview.setOnClickListener(new View.OnClickListener() {
@@ -151,11 +176,25 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                         PopupMenu popup = new PopupMenu(context, view);
                         MenuInflater inflater = popup.getMenuInflater();
                         inflater.inflate(R.menu.actions, popup.getMenu());
+                        popup.getMenu().getItem(0).setTitle("http://n-plat.com/singlepost/?id=" + post_list.get(position).uniqueid);
+                        popup.getMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+
+                                Uri webpage = Uri.parse(String.valueOf(item.getTitle()));
+                                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                                getContext().startActivity(intent);
+
+                                return true;
+                            }
+
+                            ;
+
+                        });
                         popup.show();
                     }
 
                 });
-
 
             } else {
 
@@ -167,28 +206,37 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 post_nreposts = (TextView) post_view.findViewById(R.id.nreposts);
 
                 post_textview.setText(post_list.get(position).text);
+                post_textview.setTextIsSelectable(true);
                 post_usernameview.setText(post_list.get(position).username);
+                post_usernameview.setTextIsSelectable(true);
                 post_timestampview.setText(post_list.get(position).timestamp);
+                post_timestampview.setTextIsSelectable(true);
                 post_nloves.setText(post_list.get(position).nloves);
+                post_nloves.setTextIsSelectable(true);
                 post_nreposts.setText(post_list.get(position).nreposts);
+                post_nreposts.setTextIsSelectable(true);
                 share_imageview = (ImageView) post_view.findViewById(R.id.share);
 
                 share_imageview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Context wrapper = new ContextThemeWrapper(context, R.style.PopupWindowTextView);
-                        PopupWindow popup = new PopupWindow(context);
-                        TextView textview = new TextView(wrapper);
-                        textview.setText(Html.fromHtml("<a href=\"http://n-plat.com/singlepost/?id=70\">http://n-plat.com/singlepost/?id=70</a>"));
-                        popup.setContentView(textview);
-//                        popup.update(100,100);
-                        popup.showAsDropDown(view);
-//                        PopupMenu popup = new PopupMenu(context, view);
-//                        MenuInflater inflater = popup.getMenuInflater();
-//                        inflater.inflate(R.menu.actions, popup.getMenu());
- //                       popup.show();
-                    }
+                        PopupMenu popup = new PopupMenu(context, view);
+                        MenuInflater inflater = popup.getMenuInflater();
+                        inflater.inflate(R.menu.actions, popup.getMenu());
+                        popup.getMenu().getItem(0).setTitle("http://n-plat.com/singlepost/?id="+post_list.get(position).uniqueid);
+                        popup.getMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override public boolean onMenuItemClick (MenuItem item){
 
+                                Uri webpage = Uri.parse(String.valueOf(item.getTitle()));
+                                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                                getContext().startActivity(intent);
+
+                                return true;
+                            };
+
+                        });
+                        popup.show();
+                    }
                 });
 
                 heart_imageview = (ImageView) post_view.findViewById(R.id.heart);
@@ -258,8 +306,11 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 post_nreposts = (TextView) post_view.findViewById(R.id.nreposts);
 
                 post_textview.setText(post_list.get(position).parent_text);
+                post_textview.setTextIsSelectable(true);
                 post_usernameview.setText(post_list.get(position).parent_username + " (reposted by "+post_list.get(position).username+")");
+                post_usernameview.setTextIsSelectable(true);
                 post_timestampview.setText(post_list.get(position).parent_timestamp);
+                post_timestampview.setTextIsSelectable(true);
                 post_videoview.setVideoURI(Uri.parse("https://video.n-plat.com/?filename=video" + post_list.get(position).parent_videoid + ".mp4"));
                 post_videoview.setMediaController(new MediaController(post_videoview.getContext()));
                 post_videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -269,7 +320,9 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                     }
                 });
                 post_nloves.setText(post_list.get(position).nloves);
+                post_nloves.setTextIsSelectable(true);
                 post_nreposts.setText(post_list.get(position).nreposts);
+                post_nreposts.setTextIsSelectable(true);
                 share_imageview = (ImageView) post_view.findViewById(R.id.share);
 
                 share_imageview.setOnClickListener(new View.OnClickListener() {
@@ -278,9 +331,20 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                         PopupMenu popup = new PopupMenu(context, view);
                         MenuInflater inflater = popup.getMenuInflater();
                         inflater.inflate(R.menu.actions, popup.getMenu());
+                        popup.getMenu().getItem(0).setTitle("http://n-plat.com/singlepost/?id="+post_list.get(position).uniqueid);
+                        popup.getMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override public boolean onMenuItemClick (MenuItem item){
+
+                                Uri webpage = Uri.parse(String.valueOf(item.getTitle()));
+                                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                                getContext().startActivity(intent);
+
+                                return true;
+                            };
+
+                        });
                         popup.show();
                     }
-
                 });
 //            post_videoview.setOnClickListener(new VideoView.OnClickListener() {
 //
@@ -301,11 +365,16 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 post_nreposts = (TextView) post_view.findViewById(R.id.nreposts);
 
                 post_textview.setText(post_list.get(position).parent_text);
+                post_textview.setTextIsSelectable(true);
                 post_usernameview.setText(post_list.get(position).parent_username + "(reposted by "+post_list.get(position).username+")");
+                post_usernameview.setTextIsSelectable(true);
                 post_timestampview.setText(post_list.get(position).parent_timestamp);
+                post_timestampview.setTextIsSelectable(true);
                 Glide.with(this.context).load("https://image.n-plat.com/?filename=image" + post_list.get(position).parent_imageid + ".jpeg").into(post_imageview);
                 post_nloves.setText(post_list.get(position).nloves);
+                post_nloves.setTextIsSelectable(true);
                 post_nreposts.setText(post_list.get(position).nreposts);
+                post_nreposts.setTextIsSelectable(true);
                 share_imageview = (ImageView) post_view.findViewById(R.id.share);
 
                 share_imageview.setOnClickListener(new View.OnClickListener() {
@@ -314,9 +383,20 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                         PopupMenu popup = new PopupMenu(context, view);
                         MenuInflater inflater = popup.getMenuInflater();
                         inflater.inflate(R.menu.actions, popup.getMenu());
+                        popup.getMenu().getItem(0).setTitle("http://n-plat.com/singlepost/?id="+post_list.get(position).uniqueid);
+                        popup.getMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override public boolean onMenuItemClick (MenuItem item){
+
+                                Uri webpage = Uri.parse(String.valueOf(item.getTitle()));
+                                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                                getContext().startActivity(intent);
+
+                                return true;
+                            };
+
+                        });
                         popup.show();
                     }
-
                 });
 
 
@@ -330,10 +410,15 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 post_nreposts = (TextView) post_view.findViewById(R.id.nreposts);
 
                 post_textview.setText(post_list.get(position).parent_text);
+                post_textview.setTextIsSelectable(true);
                 post_usernameview.setText(post_list.get(position).parent_username + " (reposted by "+post_list.get(position).username+")");
+                post_usernameview.setTextIsSelectable(true);
                 post_timestampview.setText(post_list.get(position).parent_timestamp);
+                post_timestampview.setTextIsSelectable(true);
                 post_nloves.setText(post_list.get(position).nloves);
+                post_nloves.setTextIsSelectable(true);
                 post_nreposts.setText(post_list.get(position).nreposts);
+                post_nreposts.setTextIsSelectable(true);
                 share_imageview = (ImageView) post_view.findViewById(R.id.share);
 
                 share_imageview.setOnClickListener(new View.OnClickListener() {
@@ -342,6 +427,18 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                         PopupMenu popup = new PopupMenu(context, view);
                         MenuInflater inflater = popup.getMenuInflater();
                         inflater.inflate(R.menu.actions, popup.getMenu());
+                        popup.getMenu().getItem(0).setTitle("http://n-plat.com/singlepost/?id="+post_list.get(position).uniqueid);
+                        popup.getMenu().getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override public boolean onMenuItemClick (MenuItem item){
+
+                                Uri webpage = Uri.parse(String.valueOf(item.getTitle()));
+                                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                                getContext().startActivity(intent);
+
+                                return true;
+                            };
+
+                        });
                         popup.show();
                     }
 
