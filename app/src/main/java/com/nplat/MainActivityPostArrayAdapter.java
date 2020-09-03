@@ -139,13 +139,61 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                     }
 
                 });
-//            post_videoview.setOnClickListener(new VideoView.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    post_videoview.start();
-//                }
-//            });
+
+                heart_imageview = (ImageView) post_view.findViewById(R.id.heart);
+                heart_imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        user.getIdToken(false)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                                        if (task.isSuccessful()) {
+
+                                            id_token = task.getResult().getToken();
+
+                                            new HeartAsyncTask().execute(String.valueOf(post_list.get(position).uniqueid));
+
+                                        }
+                                    }
+                                });
+
+                    }
+
+                });
+
+                repost_imageview = (ImageView) post_view.findViewById(R.id.repost);
+                repost_imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        user.getIdToken(false)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                                        if (task.isSuccessful()) {
+
+                                            id_token = task.getResult().getToken();
+
+                                            new RepostAsyncTask().execute(String.valueOf(post_list.get(position).uniqueid));
+
+                                        }
+                                    }
+                                });
+
+                    }
+
+                });
+
 
             } else if (post_list.get(position).imageid != 0) {
 
@@ -195,6 +243,61 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                     }
 
                 });
+
+                heart_imageview = (ImageView) post_view.findViewById(R.id.heart);
+                heart_imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        user.getIdToken(false)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                                        if (task.isSuccessful()) {
+
+                                            id_token = task.getResult().getToken();
+
+                                            new HeartAsyncTask().execute(String.valueOf(post_list.get(position).uniqueid));
+
+                                        }
+                                    }
+                                });
+
+                    }
+
+                });
+
+                repost_imageview = (ImageView) post_view.findViewById(R.id.repost);
+                repost_imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        user.getIdToken(false)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                                        if (task.isSuccessful()) {
+
+                                            id_token = task.getResult().getToken();
+
+                                            new RepostAsyncTask().execute(String.valueOf(post_list.get(position).uniqueid));
+
+                                        }
+                                    }
+                                });
+
+                    }
+
+                });
+
 
             } else {
 
@@ -283,7 +386,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
 
                                             id_token = task.getResult().getToken();
 
-                                            new RepostAsyncTask().execute(post_list.get(position).text, post_list.get(position).timestamp, String.valueOf(post_list.get(position).uniqueid), post_list.get(position).username);
+                                            new RepostAsyncTask().execute(String.valueOf(post_list.get(position).uniqueid));
 
                                         }
                                     }
@@ -346,13 +449,60 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                         popup.show();
                     }
                 });
-//            post_videoview.setOnClickListener(new VideoView.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    post_videoview.start();
-//                }
-//            });
+
+                heart_imageview = (ImageView) post_view.findViewById(R.id.heart);
+                heart_imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        user.getIdToken(false)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                                        if (task.isSuccessful()) {
+
+                                            id_token = task.getResult().getToken();
+
+                                            new HeartAsyncTask().execute(String.valueOf(post_list.get(position).parent_uniqueid));
+
+                                        }
+                                    }
+                                });
+
+                    }
+
+                });
+
+                repost_imageview = (ImageView) post_view.findViewById(R.id.repost);
+                repost_imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        user.getIdToken(false)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                                        if (task.isSuccessful()) {
+
+                                            id_token = task.getResult().getToken();
+
+                                            new RepostAsyncTask().execute(String.valueOf(post_list.get(position).parent_uniqueid));
+
+                                        }
+                                    }
+                                });
+
+                    }
+
+                });
 
             } else if (post_list.get(position).parent_imageid != 0) {
 
@@ -399,6 +549,59 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                     }
                 });
 
+                heart_imageview = (ImageView) post_view.findViewById(R.id.heart);
+                heart_imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        user.getIdToken(false)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                                        if (task.isSuccessful()) {
+
+                                            id_token = task.getResult().getToken();
+
+                                            new HeartAsyncTask().execute(String.valueOf(post_list.get(position).parent_uniqueid));
+
+                                        }
+                                    }
+                                });
+
+                    }
+
+                });
+
+                repost_imageview = (ImageView) post_view.findViewById(R.id.repost);
+                repost_imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        user.getIdToken(false)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                                        if (task.isSuccessful()) {
+
+                                            id_token = task.getResult().getToken();
+
+                                            new RepostAsyncTask().execute(String.valueOf(post_list.get(position).parent_uniqueid));
+
+                                        }
+                                    }
+                                });
+
+                    }
+
+                });
 
             } else {
 
@@ -461,7 +664,34 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
 
                                             id_token = task.getResult().getToken();
 
-                                            new HeartAsyncTask().execute(String.valueOf(post_list.get(position).uniqueid));
+                                            new HeartAsyncTask().execute(String.valueOf(post_list.get(position).parent_uniqueid));
+
+                                        }
+                                    }
+                                });
+
+                    }
+
+                });
+
+                repost_imageview = (ImageView) post_view.findViewById(R.id.repost);
+                repost_imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        user.getIdToken(false)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+
+                                        if (task.isSuccessful()) {
+
+                                            id_token = task.getResult().getToken();
+
+                                            new RepostAsyncTask().execute(String.valueOf(post_list.get(position).parent_uniqueid));
 
                                         }
                                     }
@@ -602,7 +832,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
         }
 
         @Override
-        protected Integer doInBackground(String... strings) {
+        protected Integer doInBackground(String... post_id) {
 
             InputStream inputStream = null;
             HttpsURLConnection urlConnection = null;
@@ -630,12 +860,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 JSONObject token_json = new JSONObject();
 
                 token_json.put("id_token",id_token);
-                token_json.put("message",strings[0]);
-                token_json.put("time",strings[1]);
-                token_json.put("unique_id",strings[2]);
-                token_json.put("username",strings[3]);
-                token_json.put("image_unique_id",JSONObject.NULL);
-                token_json.put("video_unique_id",JSONObject.NULL);
+                token_json.put("post_id",post_id[0]);
 
                 writer.write(token_json.toString());
 
