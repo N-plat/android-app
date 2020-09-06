@@ -720,7 +720,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
         protected void onPreExecute() {
             super.onPreExecute();
 
-            //progressDialog = ProgressDialog.show(context, "","Getting Contacts");
+            progressDialog = ProgressDialog.show(context, "","Loving");
         }
 
         @Override
@@ -805,14 +805,18 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            //progressDialog.dismiss();
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
         }
 
         @Override
         protected void onCancelled() {
             super.onCancelled();
 
-            progressDialog.dismiss();
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
         }
     }
 
@@ -828,7 +832,7 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
         protected void onPreExecute() {
             super.onPreExecute();
 
-            //progressDialog = ProgressDialog.show(context, "","Getting Contacts");
+            progressDialog = ProgressDialog.show(context, "","Reposting");
         }
 
         @Override
@@ -913,14 +917,18 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
 
-            //progressDialog.dismiss();
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
         }
 
         @Override
         protected void onCancelled() {
             super.onCancelled();
 
-            progressDialog.dismiss();
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
         }
     }
 
