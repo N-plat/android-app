@@ -52,14 +52,17 @@ public class PageViewModel extends ViewModel {
         public int videoid;
         public int imageid;
         public int uniqueid;
+        public String nloves;
+        public String nreposts;
         public String parent_text;
         public String parent_username;
         public String parent_timestamp;
         public int parent_videoid;
         public int parent_imageid;
         public int parent_uniqueid;
-        public String nloves;
-        public String nreposts;
+        public String parent_nloves;
+        public String parent_nreposts;
+
     }
 
     public class Username {

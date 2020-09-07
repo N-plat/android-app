@@ -422,9 +422,9 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                         mp.seekTo(0);
                     }
                 });
-                post_nloves.setText(post_list.get(position).nloves);
+                post_nloves.setText(post_list.get(position).parent_nloves);
                 post_nloves.setTextIsSelectable(true);
-                post_nreposts.setText(post_list.get(position).nreposts);
+                post_nreposts.setText(post_list.get(position).parent_nreposts);
                 post_nreposts.setTextIsSelectable(true);
                 share_imageview = (ImageView) post_view.findViewById(R.id.share);
 
@@ -521,9 +521,9 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 post_timestampview.setText(post_list.get(position).parent_timestamp);
                 post_timestampview.setTextIsSelectable(true);
                 Glide.with(this.context).load("https://image.n-plat.com/?filename=image" + post_list.get(position).parent_imageid + ".jpeg").into(post_imageview);
-                post_nloves.setText(post_list.get(position).nloves);
+                post_nloves.setText(post_list.get(position).parent_nloves);
                 post_nloves.setTextIsSelectable(true);
-                post_nreposts.setText(post_list.get(position).nreposts);
+                post_nreposts.setText(post_list.get(position).parent_nreposts);
                 post_nreposts.setTextIsSelectable(true);
                 share_imageview = (ImageView) post_view.findViewById(R.id.share);
 
@@ -618,9 +618,9 @@ public class MainActivityPostArrayAdapter extends ArrayAdapter<PageViewModel.Pos
                 post_usernameview.setTextIsSelectable(true);
                 post_timestampview.setText(post_list.get(position).parent_timestamp);
                 post_timestampview.setTextIsSelectable(true);
-                post_nloves.setText(post_list.get(position).nloves);
+                post_nloves.setText(post_list.get(position).parent_nloves);
                 post_nloves.setTextIsSelectable(true);
-                post_nreposts.setText(post_list.get(position).nreposts);
+                post_nreposts.setText(post_list.get(position).parent_nreposts);
                 post_nreposts.setTextIsSelectable(true);
                 share_imageview = (ImageView) post_view.findViewById(R.id.share);
 

@@ -34,14 +34,17 @@ public class MainActivity extends AppCompatActivity {
         int videoid;
         int imageid;
         int uniqueid;
+        int nloves;
+        int nreposts;
         String parent_text;
         String parent_username;
         String parent_timestamp;
         int parent_videoid;
         int parent_imageid;
         int parent_uniqueid;
-        int nloves;
-        int nreposts;
+        int parent_nloves;
+        int parent_nreposts;
+
     }
 
     List<MainActivity.Post> post_list = null;
